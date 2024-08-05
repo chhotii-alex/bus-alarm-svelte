@@ -1,10 +1,12 @@
 <script>
   /*
 TODO:
-
-* git push (periodically)
-* npm run format (periodically)
+* page title in head
+* npm run format as a git commit hook?
+* SVG icon for settings button
+* meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
+* DEMO mode
 */
 
   import { onMount } from "svelte";
