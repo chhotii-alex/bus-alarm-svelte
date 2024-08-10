@@ -1,12 +1,21 @@
 <script>
   /*
 TODO:
+* cope with temporary network glitch
+* refactor: short functions
+* refactor: good variable names
+* refactor: atomic components
+* re-order transits
+* collapse/expand individual transits
 * page title in head
 * npm run format as a git commit hook?
 * SVG icon for settings button
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
+* different icons for different types of alerts
 * DEMO mode
+* allow playing uploaded .mp3
+* pay attention to alert.attributes.active_period
 */
 
   import { onMount } from "svelte";
@@ -67,6 +76,11 @@ TODO:
       greenMinutes: 30,
       yellowMinutes: 15,
       redMinutes: 5,
+      ignoreEarlyBusses: false,
+      earlyTime: "8:30",
+      beepRepeatInterval: 5,
+      minBeepTime: "7:00",
+      maxBeepTime: "10:00",
     };
     transits.push(transit);
     transits = transits;
@@ -92,7 +106,8 @@ TODO:
 </details>
 
 {#each transits as transit}
-  <TransitPrediction {transit} removeFromParent={removeTransit} />
+  <TransitPrediction {transit} removeFromParent={removeTransit}
+      save={saveAll}/>
 {/each}
 
 <details>
