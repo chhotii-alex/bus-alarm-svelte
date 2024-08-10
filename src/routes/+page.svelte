@@ -106,8 +106,11 @@ TODO:
 </details>
 
 {#each transits as transit}
-  <TransitPrediction {transit} removeFromParent={removeTransit}
-      save={saveAll}/>
+  <TransitPrediction
+    {transit}
+    removeFromParent={removeTransit}
+    save={saveAll}
+  />
 {/each}
 
 <details>

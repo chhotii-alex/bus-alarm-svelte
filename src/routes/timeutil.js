@@ -14,33 +14,33 @@ export const minutesAndSeconds = function (diff) {
   return str;
 };
 
-export const timeStringToMinutes = function(str) {
-  if ((typeof str) != "string") return 0;
+export const timeStringToMinutes = function (str) {
+  if (typeof str != "string") return 0;
   let fields = str.split(":");
-    let minutes = 60*parseInt(fields[0]);
-    if (fields.length > 1) {
-	minutes += parseInt(fields[1]);
-    }
-    return minutes;
-}
+  let minutes = 60 * parseInt(fields[0]);
+  if (fields.length > 1) {
+    minutes += parseInt(fields[1]);
+  }
+  return minutes;
+};
 
-export const justTimePart = function(timeStr) {
-    let fields = timeStr.split('T');
-    if (fields && fields.length > 1) {
-	fields = fields[1].split('-');
-	if (fields) {
-	    return fields[0];
-	}
+export const justTimePart = function (timeStr) {
+  let fields = timeStr.split("T");
+  if (fields && fields.length > 1) {
+    fields = fields[1].split("-");
+    if (fields) {
+      return fields[0];
     }
-    return "not parsed: " + timeStr;
-}
+  }
+  return "not parsed: " + timeStr;
+};
 
 export const minutesFromMillis = function (millis) {
-    return millis / (1000*60);
-}
+  return millis / (1000 * 60);
+};
 
-export const minutesFromNow = function(timeStr, now) {
-    const aTime = Date.parse(timeStr);
-    let ms = aTime - now;
-    return Math.floor(minutesFromMillis(ms));
-}
+export const minutesFromNow = function (timeStr, now) {
+  const aTime = Date.parse(timeStr);
+  let ms = aTime - now;
+  return Math.floor(minutesFromMillis(ms));
+};

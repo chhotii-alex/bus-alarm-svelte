@@ -1,7 +1,13 @@
 <script>
   import { onMount } from "svelte";
   import { mbtaFetch } from "./mbtafetch.js";
-  import { minutesAndSeconds, timeStringToMinutes, justTimePart, minutesFromNow, minutesFromMillis } from "./timeutil.js";
+  import {
+    minutesAndSeconds,
+    timeStringToMinutes,
+    justTimePart,
+    minutesFromNow,
+    minutesFromMillis,
+  } from "./timeutil.js";
 
   export let transit;
   export let removeFromParent;
@@ -15,7 +21,7 @@
   let color = "#FFFFFF";
   let showingDetails = false;
   let shouldDoBeep = false; // whether we should beep when bus approaching
-  let beepsOn = false;  // ON when we both want beeps, and a bus is approaching
+  let beepsOn = false; // ON when we both want beeps, and a bus is approaching
   let beepTimerID = null;
   let globalAudio = null;
   let globalAudioOffsetTime = null;
@@ -24,29 +30,29 @@
     getPrediction();
     getAlerts();
     setInterval(getPrediction, 9999);
-    setInterval(getAlerts, 5*60*1000);
+    setInterval(getAlerts, 5 * 60 * 1000);
     setInterval(tickTime, 333);
     setBeepInterval(transit.beepRepeatInterval);
   });
 
   function setBeepInterval(repeatInterval) {
     if (beepTimerID) {
-       clearInterval(beepTimerID);
-       beepTimerID = null;
+      clearInterval(beepTimerID);
+      beepTimerID = null;
     }
     let interval = parseInt(repeatInterval);
-    if (!(typeof interval == 'number') || (interval < 1)) {
+    if (!(typeof interval == "number") || interval < 1) {
       interval = 1;
     }
-    beepTimerID = setInterval(maybeBeep, interval*1000);
+    beepTimerID = setInterval(maybeBeep, interval * 1000);
   }
 
   $: setBeepInterval(transit.beepRepeatInterval);
 
   function makeAudioContext() {
     if (!globalAudio) {
-        let AudioContext = window.AudioContext || window.webkitAudioContext;  // find the class
-    	globalAudio = new AudioContext();
+      let AudioContext = window.AudioContext || window.webkitAudioContext; // find the class
+      globalAudio = new AudioContext();
     }
   }
 
@@ -62,22 +68,22 @@
     let duration = 300;
 
     let startTime = globalAudio.currentTime;
-        if (globalAudioOffsetTime && (globalAudioOffsetTime>startTime)) {
-          startTime = globalAudioOffsetTime + 0.02;
-        }
-        let endTime = startTime+duration*0.001;
-        globalAudioOffsetTime = endTime;
-        var beep=globalAudio.createOscillator();
-        beep.frequency.value=freq;
-        beep.type="sine";
-        let u = globalAudio.createGain();
-        u.connect(globalAudio.destination);
-        u.gain.setValueAtTime(0, startTime);
-        u.gain.linearRampToValueAtTime(vol*0.01, startTime+0.05);
-        u.gain.linearRampToValueAtTime(0, endTime);      
-        beep.connect(u);
-        beep.start(startTime);
-        beep.stop(endTime);
+    if (globalAudioOffsetTime && globalAudioOffsetTime > startTime) {
+      startTime = globalAudioOffsetTime + 0.02;
+    }
+    let endTime = startTime + duration * 0.001;
+    globalAudioOffsetTime = endTime;
+    var beep = globalAudio.createOscillator();
+    beep.frequency.value = freq;
+    beep.type = "sine";
+    let u = globalAudio.createGain();
+    u.connect(globalAudio.destination);
+    u.gain.setValueAtTime(0, startTime);
+    u.gain.linearRampToValueAtTime(vol * 0.01, startTime + 0.05);
+    u.gain.linearRampToValueAtTime(0, endTime);
+    beep.connect(u);
+    beep.start(startTime);
+    beep.stop(endTime);
   }
 
   async function getAlerts() {
@@ -90,8 +96,7 @@
       }
       const data = await response.json();
       alerts = data.data;
-    }
-    catch (err) {
+    } catch (err) {
       error = err.message;
     }
   }
@@ -140,7 +145,7 @@
   }
 
   function millisFromMinutes(minutes) {
-    return minutes*60*1000;
+    return minutes * 60 * 1000;
   }
 
   function updatePredictionDisplay(now, prediction, error) {
@@ -149,48 +154,50 @@
     if (prediction) {
       for (const time of prediction.times) {
         let anArrivalTime = Date.parse(time);
-	if (transit.ignoreImmediateBusses) {
-	  if ((anArrivalTime - now.getTime()) < millisFromMinutes(transit.immediateThreshold)) {
-	    continue;
-	  }
-	}
+        if (transit.ignoreImmediateBusses) {
+          if (
+            anArrivalTime - now.getTime() <
+            millisFromMinutes(transit.immediateThreshold)
+          ) {
+            continue;
+          }
+        }
         let fields = time.split("T");
-	if (transit.ignoreEarlyBusses && transit.earlyTime) {
-	  let earlyTimeInMin = timeStringToMinutes(transit.earlyTime);
-	  let transitTime = timeStringToMinutes(fields[1]);
-	  if (transitTime < earlyTimeInMin) {
+        if (transit.ignoreEarlyBusses && transit.earlyTime) {
+          let earlyTimeInMin = timeStringToMinutes(transit.earlyTime);
+          let transitTime = timeStringToMinutes(fields[1]);
+          if (transitTime < earlyTimeInMin) {
             continue; // we are not interested in any bus that comes THAT early
           }
-	}
+        }
         soonestArrivalTime = anArrivalTime;
         break;
       }
       if (soonestArrivalTime == null) {
         soonest = "no bus"; // TODO: use actual transit type (rail, boat...)
-	color = "grey";
+        color = "grey";
       } else {
         let ms = soonestArrivalTime - now.getTime();
         soonest = minutesAndSeconds(ms);
-	let minutes = minutesFromMillis(ms);
-	if (minutes < transit.redMinutes) {
-	  color = "OrangeRed";
-	}
-	else if (minutes < transit.yellowMinutes) {
-	  color = "yellow";
-	  if (shouldDoBeep) {
-	    let nowMinutes = now.getHours()*60+now.getMinutes();
-	    if (nowMinutes >= timeStringToMinutes(transit.minBeepTime) &&
-               nowMinutes <= timeStringToMinutes(transit.maxBeepTime)) {
-                    shouldBeepNow = true;
+        let minutes = minutesFromMillis(ms);
+        if (minutes < transit.redMinutes) {
+          color = "OrangeRed";
+        } else if (minutes < transit.yellowMinutes) {
+          color = "yellow";
+          if (shouldDoBeep) {
+            let nowMinutes = now.getHours() * 60 + now.getMinutes();
+            if (
+              nowMinutes >= timeStringToMinutes(transit.minBeepTime) &&
+              nowMinutes <= timeStringToMinutes(transit.maxBeepTime)
+            ) {
+              shouldBeepNow = true;
             }
-	  }
-	}
-	else if (minutes < transit.greenMinutes) {
-	  color = "Lime";
-	}
-	else {
-	  color = "#FFFFFF";
-	}
+          }
+        } else if (minutes < transit.greenMinutes) {
+          color = "Lime";
+        } else {
+          color = "#FFFFFF";
+        }
       }
     } else {
       soonest = "";
@@ -217,7 +224,7 @@
   }
 </script>
 
-<fieldset style:background-color={color} >
+<fieldset style:background-color={color}>
   <legend> {transit.nickname} </legend>
   <div class="transit">
     Next {transit.route}
@@ -229,65 +236,97 @@
     <i> Error: {error} </i>
   {/if}
   <ul>
-  {#each alerts as alert}
-    <li>
-      <b> { alert.attributes.short_header } </b>
-      <br/>
-      { alert.attributes.description }
-    </li>
-  {/each}
+    {#each alerts as alert}
+      <li>
+        <b> {alert.attributes.short_header} </b>
+        <br />
+        {alert.attributes.description}
+      </li>
+    {/each}
   </ul>
   {#if showingDetails}
     All predicted times:
     <ul>
       {#each prediction.times as time}
         <li>
-          { justTimePart(time) } ( in { minutesFromNow(time, now) } minutes )
+          {justTimePart(time)} ( in {minutesFromNow(time, now)} minutes )
         </li>
       {/each}
     </ul>
     <button on:click={removeTransit}>remove</button>
     <button on:click={hideDetails}> X </button>
     <p>
-    Green Alert when within <input bind:value={transit.greenMinutes}
-       on:input={handleInput} /> minutes
-    <input type="checkbox" id="ignoreEarlyBusses"
-       bind:checked={transit.ignoreEarlyBusses}
-       on:change={handleInput} />
-    <label for="ignoreEarlyBusses" > Don't show any early bus</label>
-    {#if transit.ignoreEarlyBusses}
-      <input type="time" bind:value={transit.earlyTime}
-        on:input={handleInput} />
-    {/if}
+      Green Alert when within <input
+        bind:value={transit.greenMinutes}
+        on:input={handleInput}
+      />
+      minutes
+      <input
+        type="checkbox"
+        id="ignoreEarlyBusses"
+        bind:checked={transit.ignoreEarlyBusses}
+        on:change={handleInput}
+      />
+      <label for="ignoreEarlyBusses"> Don't show any early bus</label>
+      {#if transit.ignoreEarlyBusses}
+        <input
+          type="time"
+          bind:value={transit.earlyTime}
+          on:input={handleInput}
+        />
+      {/if}
     </p>
     <p>
-    Yellow Alert when within <input bind:value={transit.yellowMinutes}
-       on:input={handleInput} /> minutes
-    <input type="checkbox" id="beep"
-       bind:checked={shouldDoBeep}
-       on:change={makeAudioContext}
-       />
-    <label for="beep" > Beep during Yellow Alert </label>
-    {#if shouldDoBeep}
-      every <input bind:value={transit.beepRepeatInterval}
-              on:input={handleInput} /> seconds
-      between <input type="time"
-         bind:value={transit.minBeepTime} on:input={handleInput} />
-      and <input type="time"
-         bind:value={transit.maxBeepTime} on:input={handleInput} />
-    {/if}
+      Yellow Alert when within <input
+        bind:value={transit.yellowMinutes}
+        on:input={handleInput}
+      />
+      minutes
+      <input
+        type="checkbox"
+        id="beep"
+        bind:checked={shouldDoBeep}
+        on:change={makeAudioContext}
+      />
+      <label for="beep"> Beep during Yellow Alert </label>
+      {#if shouldDoBeep}
+        every <input
+          bind:value={transit.beepRepeatInterval}
+          on:input={handleInput}
+        />
+        seconds between
+        <input
+          type="time"
+          bind:value={transit.minBeepTime}
+          on:input={handleInput}
+        />
+        and
+        <input
+          type="time"
+          bind:value={transit.maxBeepTime}
+          on:input={handleInput}
+        />
+      {/if}
     </p>
     <p>
-    Red Alert when within <input bind:value={transit.redMinutes}
-      on:input={handleInput} /> minutes
-    <input type="checkbox" id="ignoreImmediateBusses"
-       bind:checked={transit.ignoreImmediateBusses}
-       on:change={handleInput} />
-    <label for="ignoreImmediateBusses" > Don't show immediate bus </label>
-    {#if transit.ignoreImmediateBusses }
-      coming within <input bind:value={transit.immediateThreshold}
-         on:input={handleInput} /> minutes
-    {/if}
+      Red Alert when within <input
+        bind:value={transit.redMinutes}
+        on:input={handleInput}
+      />
+      minutes
+      <input
+        type="checkbox"
+        id="ignoreImmediateBusses"
+        bind:checked={transit.ignoreImmediateBusses}
+        on:change={handleInput}
+      />
+      <label for="ignoreImmediateBusses"> Don't show immediate bus </label>
+      {#if transit.ignoreImmediateBusses}
+        coming within <input
+          bind:value={transit.immediateThreshold}
+          on:input={handleInput}
+        /> minutes
+      {/if}
     </p>
   {:else}
     <button on:click={showDetails}>Show Details</button>
@@ -295,8 +334,8 @@
 </fieldset>
 
 <style>
-.transit {
-  font-size: 48px;
-  font-weight: 700;
-}
+  .transit {
+    font-size: 48px;
+    font-weight: 700;
+  }
 </style>

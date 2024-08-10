@@ -1,11 +1,3 @@
-<svelte:head>
-    <script
-      defer
-      async
-      src="https://maps.googleapis.com/maps/api/js?loading=async&key={googleKey}&libraries=places"
-    ></script>  
-</svelte:head>
-
 <script>
   import { onMount } from "svelte";
   import { mbtaFetch } from "./mbtafetch.js";
@@ -100,7 +92,7 @@
           label: stopLabel,
         };
         stops.push(newStop);
-	newStopLookup[newStop.id] = newStop.name;
+        newStopLookup[newStop.id] = newStop.name;
       }
     }
     stopsLookup = newStopLookup;
@@ -113,8 +105,15 @@
     longitude,
   );
   $: stopName = stopsLookup[selectedStop];
-  
 </script>
+
+<svelte:head>
+  <script
+    defer
+    async
+    src="https://maps.googleapis.com/maps/api/js?loading=async&key={googleKey}&libraries=places"
+  ></script>
+</svelte:head>
 
 <GeoLocationPicker bind:latitude bind:longitude />
 

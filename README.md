@@ -1,6 +1,6 @@
 # bus-alarm-svelte
 
-A port (in progress) of my Bus Alarm project, from Vue to Svelte. 
+A port (in progress) of my Bus Alarm project, from Vue to Svelte.
 
 ## Developing
 
