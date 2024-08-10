@@ -1,10 +1,9 @@
 <script>
   /*
 TODO:
-* cope with temporary network glitch
-* refactor: short functions
 * refactor: good variable names
 * refactor: atomic components
+* README
 * re-order transits
 * collapse/expand individual transits
 * page title in head
@@ -16,6 +15,7 @@ TODO:
 * DEMO mode
 * allow playing uploaded .mp3
 * pay attention to alert.attributes.active_period
+* refactor: clean code recommendations
 */
 
   import { onMount } from "svelte";

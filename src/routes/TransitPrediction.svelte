@@ -7,6 +7,7 @@
     justTimePart,
     minutesFromNow,
     minutesFromMillis,
+    minutesFromMidnight,
   } from "./timeutil.js";
 
   export let transit;
@@ -101,18 +102,38 @@
     }
   }
 
-  async function getPrediction() {
-    const url =
+  function urlForPredictions(transit) {
+    return (
       "https://api-v3.mbta.com//predictions?filter[stop]=" +
       transit.stop +
       "&filter[direction_id]=" +
       transit.direction +
-      "&sort=time";
+      "&sort=time"
+    );
+  }
+
+  function clearPredictionError() {
+    prediction.lastSuccessfulFetch = Date.now();
+    error = null;
+  }
+
+  function isUsaablePrediction(prediction) {
+    if (prediction.relationships == null) return false;
+    if (prediction.relationships.route == null) return false;
+    if (prediction.relationships.route.data == null) return false;
+    if (prediction.relationships.route.data.id != transit.route) return false;
+    if (prediction.attributes.direction_id != transit.direction) return false;
+    if (prediction.attributes.departure_time == null) return false;
+    return true;
+  }
+
+  async function getPrediction() {
+    const url = urlForPredictions(transit);
     try {
       const response = await mbtaFetch(url, prediction?.lastMod);
       if (response.status == 304) {
         // See https://www.mbta.com/developers/v3-api/best-practices Caching
-        prediction.lastSuccessfulFetch = Date.now();
+        clearPredictionError();
         return;
       }
       if (!response.ok) {
@@ -122,12 +143,7 @@
       const predictions = data.data;
       let times = [];
       for (const prediction of predictions) {
-        if (prediction.relationships == null) continue;
-        if (prediction.relationships.route == null) continue;
-        if (prediction.relationships.route.data == null) continue;
-        if (prediction.relationships.route.data.id != transit.route) continue;
-        if (prediction.attributes.direction_id != transit.direction) continue;
-        if (prediction.attributes.departure_time == null) continue;
+        if (!isUsaablePrediction(prediction)) continue;
         let time =
           prediction.attributes.arrival_time ||
           prediction.attributes.departure_time;
@@ -135,12 +151,15 @@
       }
       prediction = {
         times: times,
-        lastSuccessfulFetch: Date.now(),
         lastMod: response.headers.get("last-modified"),
       };
-      error = null;
+      clearPredictionError();
     } catch (err) {
       error = err.message;
+      if (prediction?.lastSuccessfulFetch) {
+        let whenStr = new Date(prediction.lastSuccessfulFetch).toLocaleString();
+        error += ` Last successful fetch: ${whenStr}`;
+      }
     }
   }
 
@@ -148,31 +167,35 @@
     return minutes * 60 * 1000;
   }
 
-  function updatePredictionDisplay(now, prediction, error) {
+  function getSoonestValidArrival(prediction) {
     let soonestArrivalTime = null; // pick out first time in prediction array that's not too immediate
+    for (const time of prediction.times) {
+      let anArrivalTime = Date.parse(time);
+      if (transit.ignoreImmediateBusses) {
+        if (
+          anArrivalTime - now.getTime() <
+          millisFromMinutes(transit.immediateThreshold)
+        ) {
+          continue;
+        }
+      }
+      if (transit.ignoreEarlyBusses && transit.earlyTime) {
+        let earlyTimeInMin = timeStringToMinutes(transit.earlyTime);
+        let transitTime = minutesFromMidnight(time);
+        if (transitTime < earlyTimeInMin) {
+          continue; // we are not interested in any bus that comes THAT early
+        }
+      }
+      soonestArrivalTime = anArrivalTime;
+      break;
+    }
+    return soonestArrivalTime;
+  }
+
+  function updatePredictionDisplay(now, prediction, error) {
     let shouldBeepNow = false;
     if (prediction) {
-      for (const time of prediction.times) {
-        let anArrivalTime = Date.parse(time);
-        if (transit.ignoreImmediateBusses) {
-          if (
-            anArrivalTime - now.getTime() <
-            millisFromMinutes(transit.immediateThreshold)
-          ) {
-            continue;
-          }
-        }
-        let fields = time.split("T");
-        if (transit.ignoreEarlyBusses && transit.earlyTime) {
-          let earlyTimeInMin = timeStringToMinutes(transit.earlyTime);
-          let transitTime = timeStringToMinutes(fields[1]);
-          if (transitTime < earlyTimeInMin) {
-            continue; // we are not interested in any bus that comes THAT early
-          }
-        }
-        soonestArrivalTime = anArrivalTime;
-        break;
-      }
+      let soonestArrivalTime = getSoonestValidArrival(prediction);
       if (soonestArrivalTime == null) {
         soonest = "no bus"; // TODO: use actual transit type (rail, boat...)
         color = "grey";

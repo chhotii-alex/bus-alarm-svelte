@@ -24,6 +24,11 @@ export const timeStringToMinutes = function (str) {
   return minutes;
 };
 
+export const minutesFromMidnight = function (dateTimeStr) {
+  let fields = dateTimeStr.split("T");
+  return timeStringToMinutes(fields[1]);
+};
+
 export const justTimePart = function (timeStr) {
   let fields = timeStr.split("T");
   if (fields && fields.length > 1) {
