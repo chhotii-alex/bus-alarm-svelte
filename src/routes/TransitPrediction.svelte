@@ -10,6 +10,8 @@
     millisFromMinutes,
     minutesFromMidnight,
   } from "./timeutil.js";
+  import AlertsDisplay from "./AlertsDisplay.svelte";
+  import TransitSettings from "./TransitSettings.svelte";
 
   export let transit;
   export let removeFromParent;
@@ -50,6 +52,7 @@
   }
 
   $: setBeepInterval(transit.beepRepeatInterval);
+  $: if (shouldDoBeep) makeAudioContext();
 
   function makeAudioContext() {
     if (!myAudioContext) {
@@ -238,10 +241,6 @@
   function removeTransit() {
     removeFromParent(transit);
   }
-
-  function handleInput(e) {
-    save();
-  }
 </script>
 
 <fieldset style:background-color={color}>
@@ -255,15 +254,7 @@
   {#if errorText}
     <i> Error: {errorText} </i>
   {/if}
-  <ul>
-    {#each alerts as alert}
-      <li>
-        <b> {alert.attributes.short_header} </b>
-        <br />
-        {alert.attributes.description}
-      </li>
-    {/each}
-  </ul>
+  <AlertsDisplay {alerts} />
   {#if showingDetails}
     All predicted times:
     <ul>
@@ -275,79 +266,7 @@
     </ul>
     <button on:click={removeTransit}>remove</button>
     <button on:click={hideDetails}> X </button>
-    <p>
-      Green Alert when within <input
-        bind:value={transit.greenMinutes}
-        on:input={handleInput}
-      />
-      minutes
-      <input
-        type="checkbox"
-        id="ignoreEarlyBusses"
-        bind:checked={transit.ignoreEarlyBusses}
-        on:change={handleInput}
-      />
-      <label for="ignoreEarlyBusses"> Don&apos;t show any early bus</label>
-      {#if transit.ignoreEarlyBusses}
-        <input
-          type="time"
-          bind:value={transit.tooEarlyTime}
-          on:input={handleInput}
-        />
-      {/if}
-    </p>
-    <p>
-      Yellow Alert when within <input
-        bind:value={transit.yellowMinutes}
-        on:input={handleInput}
-      />
-      minutes
-      <input
-        type="checkbox"
-        id="beep"
-        bind:checked={shouldDoBeep}
-        on:change={makeAudioContext}
-      />
-      <label for="beep"> Beep during Yellow Alert </label>
-      {#if shouldDoBeep}
-        every <input
-          bind:value={transit.beepRepeatInterval}
-          on:input={handleInput}
-        />
-        seconds between
-        <input
-          type="time"
-          bind:value={transit.minBeepTime}
-          on:input={handleInput}
-        />
-        and
-        <input
-          type="time"
-          bind:value={transit.maxBeepTime}
-          on:input={handleInput}
-        />
-      {/if}
-    </p>
-    <p>
-      Red Alert when within <input
-        bind:value={transit.redMinutes}
-        on:input={handleInput}
-      />
-      minutes
-      <input
-        type="checkbox"
-        id="ignoreImmediateBusses"
-        bind:checked={transit.ignoreImmediateBusses}
-        on:change={handleInput}
-      />
-      <label for="ignoreImmediateBusses"> Don&apos;t show immediate bus </label>
-      {#if transit.ignoreImmediateBusses}
-        coming within <input
-          bind:value={transit.immediateThreshold}
-          on:input={handleInput}
-        /> minutes
-      {/if}
-    </p>
+    <TransitSettings {transit} {save} bind:shouldDoBeep />
   {:else}
     <button on:click={showDetails}>Show Details</button>
   {/if}
