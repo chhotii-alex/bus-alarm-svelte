@@ -117,7 +117,6 @@
 
 <GeoLocationPicker bind:latitude bind:longitude />
 
-Lat: {latitude} Long: {longitude}
 <br />
 Route: <input bind:value={selectedRoute} list="routes" />
 
