@@ -1,7 +1,5 @@
 <script>
-
-  import BusAlarm from "./BusAlarm.svelte"
-
+  import BusAlarm from "./BusAlarm.svelte";
 </script>
 
 <BusAlarm />

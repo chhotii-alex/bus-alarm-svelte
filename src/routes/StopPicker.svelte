@@ -3,6 +3,7 @@
   import { mbtaFetch } from "./mbtafetch.js";
   import { googleKey } from "./googlekey.js";
   import GeoLocationPicker from "./GeoLocationPicker.svelte";
+  import Picker from "./Picker.svelte";
 
   export let selectedRoute = "";
   export let selectedDirection = 0;
@@ -134,38 +135,9 @@ Route: <input bind:value={selectedRoute} list="routes" />
   {/await}
 {/if}
 
-{#await directionsPromise}
-  waiting for directions options...
-{:then directions}
-  <div>
-    {#each directions as dir}
-      <input
-        type="radio"
-        id={dir.label}
-        value={dir.id}
-        bind:group={selectedDirection}
-      />
-      <label for={dir.label}> {dir.name} </label>
-    {/each}
-  </div>
-{:catch error}
-  <i> Failed to fetch directions: {error} </i>
-{/await}
-
-<span>
-  {#await stopsPromise}
-    waiting for stops...
-  {:then stops}
-    {#each stops as stop}
-      <input
-        type="radio"
-        id={stop.id}
-        value={stop.id}
-        bind:group={selectedStop}
-      />
-      <label for={stop.id}> {stop.name} </label>
-    {/each}
-  {:catch error}
-    <i>Failed to fetch stops: {error} </i>
-  {/await}
-</span>
+<Picker
+  promise={directionsPromise}
+  bind:selection={selectedDirection}
+  name="direction"
+/>
+<Picker promise={stopsPromise} bind:selection={selectedStop} name="stop" />
