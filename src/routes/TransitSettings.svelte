@@ -1,19 +1,23 @@
 <script>
+  import ColorAlertSetting from "./ColorAlertSetting.svelte";
+  import BeepSettings from "./BeepSettings.svelte";
+
   export let transit;
   export let save;
   export let shouldDoBeep;
 
   function handleInput(e) {
+    transit = transit;
     save();
   }
 </script>
 
 <p>
-  Green Alert when within <input
-    bind:value={transit.greenMinutes}
-    on:input={handleInput}
+  <ColorAlertSetting
+    colorName="Green"
+    bind:minutes={transit.greenMinutes}
+    inputHandler={handleInput}
   />
-  minutes
   <input
     type="checkbox"
     id="ignoreEarlyBusses"
@@ -31,38 +35,19 @@
   {/if}
 </p>
 <p>
-  Yellow Alert when within <input
-    bind:value={transit.yellowMinutes}
-    on:input={handleInput}
+  <ColorAlertSetting
+    colorName="Yellow"
+    bind:minutes={transit.yellowMinutes}
+    inputHandler={handleInput}
   />
-  minutes
-  <input type="checkbox" id="beep" bind:checked={shouldDoBeep} />
-  <label for="beep"> Beep during Yellow Alert </label>
-  {#if shouldDoBeep}
-    every <input
-      bind:value={transit.beepRepeatInterval}
-      on:input={handleInput}
-    />
-    seconds between
-    <input
-      type="time"
-      bind:value={transit.minBeepTime}
-      on:input={handleInput}
-    />
-    and
-    <input
-      type="time"
-      bind:value={transit.maxBeepTime}
-      on:input={handleInput}
-    />
-  {/if}
+  <BeepSettings bind:shouldDoBeep {transit} {handleInput} />
 </p>
 <p>
-  Red Alert when within <input
-    bind:value={transit.redMinutes}
-    on:input={handleInput}
+  <ColorAlertSetting
+    colorName="Red"
+    bind:minutes={transit.redMinutes}
+    inputHandler={handleInput}
   />
-  minutes
   <input
     type="checkbox"
     id="ignoreImmediateBusses"

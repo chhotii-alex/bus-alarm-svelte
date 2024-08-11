@@ -266,7 +266,7 @@
     </ul>
     <button on:click={removeTransit}>remove</button>
     <button on:click={hideDetails}> X </button>
-    <TransitSettings {transit} {save} bind:shouldDoBeep />
+    <TransitSettings bind:transit {save} bind:shouldDoBeep />
   {:else}
     <button on:click={showDetails}>Show Details</button>
   {/if}
