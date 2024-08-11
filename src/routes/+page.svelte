@@ -19,8 +19,8 @@ TODO:
 */
 
   import { onMount } from "svelte";
-  import StopPicker from "./StopPicker.svelte";
   import TransitPrediction from "./TransitPrediction.svelte";
+  import AddTransitWidget from "./AddTransitWidget.svelte";
 
   const isBrowser = typeof window !== "undefined";
 
@@ -55,33 +55,7 @@ TODO:
     transits = transitsFromStorage();
   });
 
-  let selectedRoute = "";
-  let selectedDirection = 0;
-  let directionName = "";
-  let selectedStop = null;
-  let stopName = "";
-  let nickname = "";
-
-  function addStop() {
-    let newNickname = nickname || `${selectedRoute} ${directionName}`;
-    let transit = {
-      route: selectedRoute,
-      direction: selectedDirection,
-      directionName: directionName,
-      stop: selectedStop,
-      stopName: stopName,
-      nickname: newNickname,
-      ignoreImmediateBusses: true,
-      immediateThreshold: 1,
-      greenMinutes: 30,
-      yellowMinutes: 15,
-      redMinutes: 5,
-      ignoreEarlyBusses: false,
-      tooEarlyTime: "08:30",
-      beepRepeatInterval: 5,
-      minBeepTime: "07:00",
-      maxBeepTime: "10:00",
-    };
+  function addTransit(transit) {
     transits.push(transit);
     transits = transits;
     saveAll();
@@ -115,18 +89,5 @@ TODO:
 
 <details>
   <summary> Route, Direction, and Stop Picker </summary>
-  <StopPicker
-    bind:selectedRoute
-    bind:selectedDirection
-    bind:directionName
-    bind:selectedStop
-    bind:stopName
-  />
+  <AddTransitWidget {addTransit} />
 </details>
-
-{#if selectedRoute && selectedStop}
-  <input bind:value={nickname} />
-  <button on:click={addStop}> Add Stop to Watch List </button>
-{/if}
-
-
