@@ -1,8 +1,8 @@
 <script>
   /*
 TODO:
-* refactor: good variable names
 * refactor: atomic components
+* common names as well as route IDs (such as for CT2)
 * README
 * re-order transits
 * collapse/expand individual transits
@@ -77,9 +77,9 @@ TODO:
       yellowMinutes: 15,
       redMinutes: 5,
       ignoreEarlyBusses: false,
-      earlyTime: "8:30",
+      tooEarlyTime: "08:30",
       beepRepeatInterval: 5,
-      minBeepTime: "7:00",
+      minBeepTime: "07:00",
       maxBeepTime: "10:00",
     };
     transits.push(transit);
@@ -129,6 +129,4 @@ TODO:
   <button on:click={addStop}> Add Stop to Watch List </button>
 {/if}
 
-{selectedRoute}
-{selectedDirection}
-{selectedStop}
+

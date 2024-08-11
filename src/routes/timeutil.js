@@ -44,6 +44,10 @@ export const minutesFromMillis = function (millis) {
   return millis / (1000 * 60);
 };
 
+export const millisFromMinutes = function(minutes) {
+  return minutes * 60 * 1000;
+}
+
 export const minutesFromNow = function (timeStr, now) {
   const aTime = Date.parse(timeStr);
   let ms = aTime - now;

@@ -7,6 +7,7 @@
     justTimePart,
     minutesFromNow,
     minutesFromMillis,
+    millisFromMinutes,
     minutesFromMidnight,
   } from "./timeutil.js";
 
@@ -16,7 +17,7 @@
 
   let prediction;
   let alerts = [];
-  let error;
+  let errorText;
   let soonest;
   let now = new Date();
   let color = "#FFFFFF";
@@ -24,8 +25,8 @@
   let shouldDoBeep = false; // whether we should beep when bus approaching
   let beepsOn = false; // ON when we both want beeps, and a bus is approaching
   let beepTimerID = null;
-  let globalAudio = null;
-  let globalAudioOffsetTime = null;
+  let myAudioContext = null;
+  let audioOffsetTime = null;
 
   onMount(() => {
     getPrediction();
@@ -51,9 +52,9 @@
   $: setBeepInterval(transit.beepRepeatInterval);
 
   function makeAudioContext() {
-    if (!globalAudio) {
+    if (!myAudioContext) {
       let AudioContext = window.AudioContext || window.webkitAudioContext; // find the class
-      globalAudio = new AudioContext();
+      myAudioContext = new AudioContext();
     }
   }
 
@@ -62,23 +63,23 @@
   }
 
   function maybeBeep() {
-    // TODO configurable
     if (!beepsOn) return;
+    // TODO configurable
     let vol = 100;
     let freq = 220;
     let duration = 300;
 
-    let startTime = globalAudio.currentTime;
-    if (globalAudioOffsetTime && globalAudioOffsetTime > startTime) {
-      startTime = globalAudioOffsetTime + 0.02;
+    let startTime = myAudioContext.currentTime;
+    if (audioOffsetTime && audioOffsetTime > startTime) {
+      startTime = audioOffsetTime + 0.02;
     }
     let endTime = startTime + duration * 0.001;
-    globalAudioOffsetTime = endTime;
-    var beep = globalAudio.createOscillator();
+    audioOffsetTime = endTime;
+    let beep = myAudioContext.createOscillator();
     beep.frequency.value = freq;
     beep.type = "sine";
-    let u = globalAudio.createGain();
-    u.connect(globalAudio.destination);
+    let u = myAudioContext.createGain();
+    u.connect(myAudioContext.destination);
     u.gain.setValueAtTime(0, startTime);
     u.gain.linearRampToValueAtTime(vol * 0.01, startTime + 0.05);
     u.gain.linearRampToValueAtTime(0, endTime);
@@ -98,7 +99,7 @@
       const data = await response.json();
       alerts = data.data;
     } catch (err) {
-      error = err.message;
+      errorText = err.message;
     }
   }
 
@@ -114,7 +115,7 @@
 
   function clearPredictionError() {
     prediction.lastSuccessfulFetch = Date.now();
-    error = null;
+    errorText = null;
   }
 
   function isUsaablePrediction(prediction) {
@@ -155,16 +156,12 @@
       };
       clearPredictionError();
     } catch (err) {
-      error = err.message;
+      errorText = err.message;
       if (prediction?.lastSuccessfulFetch) {
         let whenStr = new Date(prediction.lastSuccessfulFetch).toLocaleString();
-        error += ` Last successful fetch: ${whenStr}`;
+        errorText += ` Last successful fetch: ${whenStr}`;
       }
     }
-  }
-
-  function millisFromMinutes(minutes) {
-    return minutes * 60 * 1000;
   }
 
   function getSoonestValidArrival(prediction) {
@@ -179,10 +176,10 @@
           continue;
         }
       }
-      if (transit.ignoreEarlyBusses && transit.earlyTime) {
-        let earlyTimeInMin = timeStringToMinutes(transit.earlyTime);
+      if (transit.ignoreEarlyBusses && transit.tooEarlyTime) {
+        let tooEarlyTimeInMin = timeStringToMinutes(transit.tooEarlyTime);
         let transitTime = minutesFromMidnight(time);
-        if (transitTime < earlyTimeInMin) {
+        if (transitTime < tooEarlyTimeInMin) {
           continue; // we are not interested in any bus that comes THAT early
         }
       }
@@ -192,7 +189,7 @@
     return soonestArrivalTime;
   }
 
-  function updatePredictionDisplay(now, prediction, error) {
+  function updatePredictionDisplay(now, prediction, _) {
     let shouldBeepNow = false;
     if (prediction) {
       let soonestArrivalTime = getSoonestValidArrival(prediction);
@@ -228,7 +225,7 @@
     beepsOn = shouldBeepNow;
   }
 
-  $: updatePredictionDisplay(now, prediction, error);
+  $: updatePredictionDisplay(now, prediction, errorText);
 
   function showDetails() {
     showingDetails = true;
@@ -255,8 +252,8 @@
     going {transit.directionName}:
     {soonest}
   </div>
-  {#if error}
-    <i> Error: {error} </i>
+  {#if errorText}
+    <i> Error: {errorText} </i>
   {/if}
   <ul>
     {#each alerts as alert}
@@ -290,11 +287,11 @@
         bind:checked={transit.ignoreEarlyBusses}
         on:change={handleInput}
       />
-      <label for="ignoreEarlyBusses"> Don't show any early bus</label>
+      <label for="ignoreEarlyBusses"> Don&apos;t show any early bus</label>
       {#if transit.ignoreEarlyBusses}
         <input
           type="time"
-          bind:value={transit.earlyTime}
+          bind:value={transit.tooEarlyTime}
           on:input={handleInput}
         />
       {/if}
@@ -343,7 +340,7 @@
         bind:checked={transit.ignoreImmediateBusses}
         on:change={handleInput}
       />
-      <label for="ignoreImmediateBusses"> Don't show immediate bus </label>
+      <label for="ignoreImmediateBusses"> Don&apos;t show immediate bus </label>
       {#if transit.ignoreImmediateBusses}
         coming within <input
           bind:value={transit.immediateThreshold}

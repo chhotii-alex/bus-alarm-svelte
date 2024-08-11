@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  // default to Park Street Station
+  // default to Park Street Station, Boston
   export let latitude = 42.356334;
   export let longitude = -71.062365;
   let errorText = "";
@@ -9,9 +9,9 @@
   let googleMap = null;
 
   onMount(() => {
-    var boston = new google.maps.LatLng(latitude, longitude);
+    let initialLocation = new google.maps.LatLng(latitude, longitude);
     googleMap = new google.maps.Map(document.getElementById("map"), {
-      center: boston,
+      center: initialLocation,
       zoom: 17,
     });
     googleMap.addListener("center_changed", makeMeUpdateCoordinates);
