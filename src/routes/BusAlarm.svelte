@@ -1,7 +1,6 @@
 <script>
   /*
 TODO:
-* need to use key for each transit (showingDetail goes with position)
 * README
 * hitting enter from nickname field fires button
 * re-order transits
@@ -81,7 +80,7 @@ TODO:
   Instructions for using Bus Alarm here
 </details>
 
-{#each transits as transit}
+{#each transits as transit (transit) }
   <TransitPrediction
     {transit}
     removeFromParent={removeTransit}
