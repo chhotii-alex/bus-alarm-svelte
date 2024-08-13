@@ -246,8 +246,8 @@
 <fieldset style:background-color={color}>
   <legend> {transit.nickname} </legend>
   <div class="transit">
-    Next {transit.route}
-    bus from {transit.stopName}
+    Next {transit.routeName}
+    from {transit.stopName}
     going {transit.directionName}:
     {soonest}
   </div>

@@ -3,7 +3,8 @@
 
   export let addTransit;
 
-  let selectedRoute = "";
+  let selectedRouteName = "";
+  let selectedRouteID;
   let selectedDirection = 0;
   let directionName = "";
   let selectedStop = null;
@@ -11,9 +12,10 @@
   let nickname = "";
 
   function addStop() {
-    let newNickname = nickname || `${selectedRoute} ${directionName}`;
+    let newNickname = nickname || `${selectedRouteName} ${directionName}`;
     let transit = {
-      route: selectedRoute,
+      routeName: selectedRouteName,
+      route: selectedRouteID,
       direction: selectedDirection,
       directionName: directionName,
       stop: selectedStop,
@@ -35,13 +37,14 @@
 </script>
 
 <StopPicker
-  bind:selectedRoute
+  bind:selectedRouteName
+  bind:selectedRouteID
   bind:selectedDirection
   bind:directionName
   bind:selectedStop
   bind:stopName
 />
-{#if selectedRoute && selectedStop}
+{#if selectedRouteID && selectedStop}
   <input bind:value={nickname} />
   <button on:click={addStop}> Add Stop to Watch List </button>
 {/if}

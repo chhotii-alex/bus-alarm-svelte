@@ -5,7 +5,8 @@
   import GeoLocationPicker from "./GeoLocationPicker.svelte";
   import Picker from "./Picker.svelte";
 
-  export let selectedRoute = "";
+  export let selectedRouteName = "";
+  export let selectedRouteID;
   export let selectedDirection = 0;
   export let directionName = "";
   export let selectedStop = null;
@@ -15,7 +16,8 @@
   let latitude = 42.356334;
   let longitude = -71.062365;
 
-  let routeIDs = [];
+  let routes = new Map();
+  $: selectedRouteID = routes.get(selectedRouteName);
 
   let routesPromise = null;
   onMount(() => {
@@ -23,21 +25,28 @@
       const url = "https://api-v3.mbta.com/routes";
       const response = await mbtaFetch(url);
       const data = await response.json();
-      const routes = data.data;
-      routeIDs = [];
-      for (const route of routes) {
-        routeIDs.push(route.id);
+      const routesData = data.data;
+      for (const route of routesData) {
+        let routeID = route.id;
+        let routeName;
+        if (route.attributes.type == 3) {
+          routeName = `${route.attributes.short_name} Bus`;
+        } else {
+          routeName = route.attributes.long_name;
+        }
+        routes.set(routeName, routeID);
       }
-      return routeIDs;
+      return routes;
     })();
   });
 
   let directionsLookup = {};
 
-  async function getDirections(route) {
+  async function getDirections(routeName) {
     let directions = [];
     let newDirectionsLookup = {};
-    if (routeIDs.includes(route)) {
+    if (routes.has(routeName)) {
+      let route = routes.get(routeName);
       let url = "https://api-v3.mbta.com/routes/" + route;
       const response = await mbtaFetch(url);
       const data = await response.json();
@@ -58,15 +67,16 @@
     directionsLookup = newDirectionsLookup;
     return directions;
   }
-  $: directionsPromise = getDirections(selectedRoute);
+  $: directionsPromise = getDirections(selectedRouteName);
   $: directionName = directionsLookup[selectedDirection];
 
   let stopsLookup = {};
 
-  async function getStops(route, direction, lat, long) {
+  async function getStops(routeName, direction, lat, long) {
     let stops = [];
     let newStopLookup = {};
-    if (route) {
+    if (routeName && routes.has(routeName)) {
+      let route = routes.get(routeName);
       let url =
         "https://api-v3.mbta.com/stops?" +
         "filter[latitude]=" +
@@ -100,7 +110,7 @@
     return stops;
   }
   $: stopsPromise = getStops(
-    selectedRoute,
+    selectedRouteName,
     selectedDirection,
     latitude,
     longitude,
@@ -119,15 +129,15 @@
 <GeoLocationPicker bind:latitude bind:longitude />
 
 <br />
-Route: <input bind:value={selectedRoute} list="routes" />
+Route: <input bind:value={selectedRouteName} list="routes" />
 
 {#if routesPromise}
   {#await routesPromise}
     waiting for routes list...
   {:then routes}
     <datalist id="routes">
-      {#each routes as routeID}
-        <option value={routeID} />
+      {#each routes as routeInfo}
+        <option value={routeInfo[0]} />
       {/each}
     </datalist>
   {:catch error}

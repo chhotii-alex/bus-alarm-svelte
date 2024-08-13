@@ -1,16 +1,18 @@
 <script>
   /*
 TODO:
-* refactor: atomic components
-* common names as well as route IDs (such as for CT2)
+* need to use key for each transit (showingDetail goes with position)
 * README
+* hitting enter from nickname field fires button
 * re-order transits
 * collapse/expand individual transits
 * page title in head
 * npm run format as a git commit hook?
+* use route color
 * SVG icon for settings button
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
+* Don't save direction name as attribute of transit; fetch anew on load
 * different icons for different types of alerts
 * DEMO mode
 * allow playing uploaded .mp3
