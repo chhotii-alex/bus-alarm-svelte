@@ -1,9 +1,12 @@
 <script>
   /*
 TODO:
-* README
+* bug: do not allow adding stop when empty stop list
 * hitting enter from nickname field fires button
 * re-order transits
+* clock/time
+* style the details/settings
+* user manual text
 * collapse/expand individual transits
 * page title in head
 * npm run format as a git commit hook?
@@ -11,9 +14,11 @@ TODO:
 * SVG icon for settings button
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
+* enhancements: datalist only lists routes with stops near lat/long
 * Don't save direction name as attribute of transit; fetch anew on load
 * different icons for different types of alerts
 * DEMO mode
+* README
 * allow playing uploaded .mp3
 * pay attention to alert.attributes.active_period
 * refactor: clean code recommendations
@@ -92,3 +97,7 @@ TODO:
   <summary> Route, Direction, and Stop Picker </summary>
   <AddTransitWidget {addTransit} />
 </details>
+
+<style>
+
+</style>
