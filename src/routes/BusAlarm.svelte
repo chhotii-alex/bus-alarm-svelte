@@ -1,7 +1,6 @@
 <script>
   /*
 TODO:
-* hitting enter from nickname field fires button
 * re-order transits
 * clock/time
 * style the details/settings

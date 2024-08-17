@@ -34,6 +34,12 @@
     };
     addTransit(transit);
   }
+
+  function onEnter(key, action) {
+    if (key === "Enter") {
+      action();
+    }
+  }
 </script>
 
 <StopPicker
@@ -45,6 +51,6 @@
   bind:stopName
 />
 {#if selectedRouteID && selectedStop && stopName}
-  <input bind:value={nickname} />
+  <input bind:value={nickname} on:keyup={(e) => onEnter(e.key, addStop)} />
   <button on:click={addStop}> Add Stop to Watch List </button>
 {/if}
