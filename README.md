@@ -10,7 +10,7 @@ Bus Alarm a SPA for conveniently keeping an eye on the MBTA's predictions, as re
 
 This code demonstrates use of the Svelte framework, use of fetch to consume a RESTful API, the programmatic use of the Google Maps and Places APIs, use of local storage (instead of cookies), creating sounds using AudioContext, and other snazzy JavaScript things.
 
-Note: You MUST get your own API keys from the MBTA and from Google to get this code to work. Google "MBTA API key" and "Google maps API key" to find out how. The code will be sad without files named `googlekey.js` and `mbtakey.js` which I have not committed to the repo, for obvious reasons. Fortunately, these API keys are free, at least to get started. (Google will charge you eventually if you have a large number of hits, but I'm managing to stay on the free 
+Note: You MUST get your own API keys from the MBTA and from Google to get this code to work. Google "MBTA API key" and "Google maps API key" to find out how. The code will be sad without files named `googlekey.js` and `mbtakey.js` which I have not committed to the repo, for obvious reasons. Fortunately, these API keys are free, at least to get started. (Google will charge you eventually if you have a large number of hits, but I'm managing to stay on the free
 tier.)
 
 Copyright 2024 Alex Morgan

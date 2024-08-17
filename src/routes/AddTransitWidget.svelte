@@ -44,7 +44,7 @@
   bind:selectedStop
   bind:stopName
 />
-{#if selectedRouteID && selectedStop}
+{#if selectedRouteID && selectedStop && stopName}
   <input bind:value={nickname} />
   <button on:click={addStop}> Add Stop to Watch List </button>
 {/if}

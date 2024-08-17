@@ -1,7 +1,6 @@
 <script>
   /*
 TODO:
-* bug: do not allow adding stop when empty stop list
 * hitting enter from nickname field fires button
 * re-order transits
 * clock/time
@@ -15,6 +14,7 @@ TODO:
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
 * enhancements: datalist only lists routes with stops near lat/long
+* enhancement: see more stops when map zoom out
 * Don't save direction name as attribute of transit; fetch anew on load
 * different icons for different types of alerts
 * DEMO mode
@@ -85,7 +85,7 @@ TODO:
   Instructions for using Bus Alarm here
 </details>
 
-{#each transits as transit (transit) }
+{#each transits as transit (transit)}
   <TransitPrediction
     {transit}
     removeFromParent={removeTransit}
@@ -99,5 +99,4 @@ TODO:
 </details>
 
 <style>
-
 </style>
