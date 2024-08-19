@@ -7,7 +7,9 @@
     <li>
       <b> {alert.attributes.short_header} </b>
       <br />
-      {alert.attributes.description}
+      {#if alert.attributes.description}
+        {alert.attributes.description}
+      {/if}
     </li>
   {/each}
 </ul>

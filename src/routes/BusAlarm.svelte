@@ -1,7 +1,6 @@
 <script>
   /*
 TODO:
-* "null" sometimes appearing in alerts
 * clock/time
 * style the details/settings
 * user manual text
