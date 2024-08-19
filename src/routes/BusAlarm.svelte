@@ -2,6 +2,7 @@
   /*
 TODO:
 * clock/time
+* save order after reordering
 * style the details/settings
 * user manual text
 * collapse/expand individual transits
@@ -25,6 +26,7 @@ TODO:
   import { onMount } from "svelte";
   import TransitPrediction from "./TransitPrediction.svelte";
   import AddTransitWidget from "./AddTransitWidget.svelte";
+  import ClockWidget from "./ClockWidget.svelte";
 
   const isBrowser = typeof window !== "undefined";
 
@@ -96,7 +98,7 @@ TODO:
 
 <details>
   <summary> Current Time </summary>
-  Here is where the time will go
+  <ClockWidget />
 </details>
 <details>
   <summary> User Manual </summary>
