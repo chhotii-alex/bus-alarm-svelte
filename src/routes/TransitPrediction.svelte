@@ -15,6 +15,7 @@
 
   export let transit;
   export let removeFromParent;
+  export let swap;
   export let save;
 
   let prediction;
@@ -241,9 +242,34 @@
   function removeTransit() {
     removeFromParent(transit);
   }
+
+  /* drag-drop functionality */
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+  function drop(ev) {
+    ev.preventDefault();
+    let fromID = parseInt(ev.dataTransfer.getData("text"));
+    let target = ev.target;
+    while (!target.id || !target.id.endsWith("_fieldset")) {
+      target = target.parentElement;
+    }
+    let toID = parseInt(target.id);
+    swap(toID, fromID);
+  }
 </script>
 
-<fieldset style:background-color={color}>
+<fieldset
+  style:background-color={color}
+  id={`${transit.id}_fieldset`}
+  on:dragstart={drag}
+  on:dragover={allowDrop}
+  on:drop={drop}
+  draggable="true"
+>
   <legend> {transit.nickname} </legend>
   <div class="transit">
     Next {transit.routeName}

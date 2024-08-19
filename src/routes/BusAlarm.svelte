@@ -1,7 +1,7 @@
 <script>
   /*
 TODO:
-* re-order transits
+* "null" sometimes appearing in alerts
 * clock/time
 * style the details/settings
 * user manual text
@@ -60,7 +60,18 @@ TODO:
     transits = transitsFromStorage();
   });
 
+  function nextID(transits) {
+    let next = 1;
+    for (let transit of transits) {
+      if (transit.id >= next) {
+        next = transit.id + 1;
+      }
+    }
+    return next;
+  }
+
   function addTransit(transit) {
+    transit.id = nextID(transits);
     transits.push(transit);
     transits = transits;
     saveAll();
@@ -73,6 +84,15 @@ TODO:
     transits = transits;
     saveAll();
   }
+  function swap(toID, fromID) {
+    if (toID == fromID) return;
+    let toIndex = transits.findIndex((t) => t.id == toID);
+    let fromIndex = transits.findIndex((t) => t.id == fromID);
+    if (toIndex < 0 || fromIndex < 0) return;
+    let movedItem = transits.splice(fromIndex, 1)[0];
+    transits.splice(toIndex, 0, movedItem);
+    transits = transits;
+  }
 </script>
 
 <details>
@@ -84,11 +104,12 @@ TODO:
   Instructions for using Bus Alarm here
 </details>
 
-{#each transits as transit (transit)}
+{#each transits as transit (transit.id)}
   <TransitPrediction
     {transit}
     removeFromParent={removeTransit}
     save={saveAll}
+    {swap}
   />
 {/each}
 
