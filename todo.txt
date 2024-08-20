@@ -1,5 +1,4 @@
 
-* page title in head
 * style the details/settings
 * user manual text
 * collapse/expand individual transits
