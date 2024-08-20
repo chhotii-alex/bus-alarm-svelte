@@ -1,28 +1,4 @@
 <script>
-  /*
-TODO:
-* clock/time
-* save order after reordering
-* style the details/settings
-* user manual text
-* collapse/expand individual transits
-* page title in head
-* npm run format as a git commit hook?
-* use route color
-* SVG icon for settings button
-* meta viewport and media queries to adapt to various screens (esp. iPhone)
-* see to-do's in code
-* enhancements: datalist only lists routes with stops near lat/long
-* enhancement: see more stops when map zoom out
-* Don't save direction name as attribute of transit; fetch anew on load
-* different icons for different types of alerts
-* DEMO mode
-* README
-* allow playing uploaded .mp3
-* pay attention to alert.attributes.active_period
-* refactor: clean code recommendations
-*/
-
   import { onMount } from "svelte";
   import TransitPrediction from "./TransitPrediction.svelte";
   import AddTransitWidget from "./AddTransitWidget.svelte";
@@ -71,19 +47,22 @@ TODO:
     return next;
   }
 
+  function propChanges() {
+    transits = transits;
+    saveAll();
+  }
+
   function addTransit(transit) {
     transit.id = nextID(transits);
     transits.push(transit);
-    transits = transits;
-    saveAll();
+    propChanges();
   }
 
   function removeTransit(transit) {
     let index = transits.indexOf(transit);
     if (index < 0) return;
     transits.splice(index, 1);
-    transits = transits;
-    saveAll();
+    propChanges();
   }
   function swap(toID, fromID) {
     if (toID == fromID) return;
@@ -92,7 +71,7 @@ TODO:
     if (toIndex < 0 || fromIndex < 0) return;
     let movedItem = transits.splice(fromIndex, 1)[0];
     transits.splice(toIndex, 0, movedItem);
-    transits = transits;
+    propChanges();
   }
 </script>
 
