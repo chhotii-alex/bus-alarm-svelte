@@ -5,5 +5,11 @@
 </script>
 
 {colorName} Alert when within
-<input bind:value={minutes} on:input={inputHandler} />
+<input
+  bind:value={minutes}
+  on:input={inputHandler}
+  type="number"
+  min="1"
+  max="480"
+/>
 minutes

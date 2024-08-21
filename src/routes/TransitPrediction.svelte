@@ -290,9 +290,11 @@
         </li>
       {/each}
     </ul>
-    <button on:click={removeTransit}>remove</button>
-    <button on:click={hideDetails}> X </button>
-    <TransitSettings bind:transit {save} bind:shouldDoBeep />
+    <div class="details clearfix">
+      <button class="right" on:click={hideDetails}> X </button>
+      <TransitSettings bind:transit {save} bind:shouldDoBeep />
+      <button class="right delete" on:click={removeTransit}>Delete</button>
+    </div>
   {:else}
     <button on:click={showDetails}>Show Details</button>
   {/if}
@@ -302,5 +304,20 @@
   .transit {
     font-size: 48px;
     font-weight: 700;
+  }
+  .details {
+    border: 1px solid black;
+  }
+  .right {
+    float: right;
+    background-color: inherit;
+  }
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .delete {
+    color: maroon;
   }
 </style>

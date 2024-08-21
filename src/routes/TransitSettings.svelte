@@ -18,21 +18,23 @@
     bind:minutes={transit.greenMinutes}
     inputHandler={handleInput}
   />
-  <input
-    type="checkbox"
-    id="ignoreEarlyBusses"
-    bind:checked={transit.ignoreEarlyBusses}
-    on:change={handleInput}
-  />
-  <label for="ignoreEarlyBusses"> Don&apos;t show any early bus</label>
-  coming before
-  {#if transit.ignoreEarlyBusses}
+  <span>
     <input
-      type="time"
-      bind:value={transit.tooEarlyTime}
-      on:input={handleInput}
+      type="checkbox"
+      id="ignoreEarlyBusses"
+      bind:checked={transit.ignoreEarlyBusses}
+      on:change={handleInput}
     />
-  {/if}
+    <label for="ignoreEarlyBusses"> Don&apos;t show any early bus</label>
+    {#if transit.ignoreEarlyBusses}
+      coming before
+      <input
+        type="time"
+        bind:value={transit.tooEarlyTime}
+        on:input={handleInput}
+      />
+    {/if}
+  </span>
 </p>
 <p>
   <ColorAlertSetting
@@ -48,17 +50,30 @@
     bind:minutes={transit.redMinutes}
     inputHandler={handleInput}
   />
-  <input
-    type="checkbox"
-    id="ignoreImmediateBusses"
-    bind:checked={transit.ignoreImmediateBusses}
-    on:change={handleInput}
-  />
-  <label for="ignoreImmediateBusses"> Don&apos;t show immediate bus </label>
-  {#if transit.ignoreImmediateBusses}
-    coming within <input
-      bind:value={transit.immediateThreshold}
-      on:input={handleInput}
-    /> minutes
-  {/if}
+  <span>
+    <input
+      type="checkbox"
+      id="ignoreImmediateBusses"
+      bind:checked={transit.ignoreImmediateBusses}
+      on:change={handleInput}
+    />
+    <label for="ignoreImmediateBusses"> Don&apos;t show bus </label>
+    {#if transit.ignoreImmediateBusses}
+      coming within <input
+        bind:value={transit.immediateThreshold}
+        type="number"
+        min="0"
+        max="60"
+        on:input={handleInput}
+      /> minutes
+    {/if}
+  </span>
 </p>
+
+<style>
+  @media only screen and (max-width: 870px) {
+    span {
+      display: block;
+    }
+  }
+</style>

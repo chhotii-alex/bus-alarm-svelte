@@ -1,5 +1,4 @@
 
-* style the details/settings
 * user manual text
 * collapse/expand individual transits
 * clock/time
@@ -12,6 +11,7 @@
 * enhancement: see more stops when map zoom out
 * Don't save direction name as attribute of transit; fetch anew on load
 * different icons for different types of alerts
+* other enhancements from old code
 * DEMO mode
 * README
 * allow playing uploaded .mp3
