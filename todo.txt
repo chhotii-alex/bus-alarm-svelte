@@ -1,4 +1,6 @@
 
+* npm audit
+* up on github.io?
 * layout of stop picker
 * user manual text
 * collapse/expand individual transits
@@ -13,6 +15,8 @@
 * Don't save direction name as attribute of transit; fetch anew on load
 * different icons for different types of alerts
 * other enhancements from old code
+* show stops as pins on Google map widget
+* cache stops for given query (switching inbound/outbound shouldn't flicker so much)
 * DEMO mode
 * README
 * allow playing uploaded .mp3
