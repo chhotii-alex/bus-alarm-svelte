@@ -126,9 +126,8 @@
   ></script>
 </svelte:head>
 
-<GeoLocationPicker bind:latitude bind:longitude />
+<GeoLocationPicker bind:latitude bind:longitude >
 
-<br />
 Route: <input bind:value={selectedRouteName} list="routes" />
 
 {#if routesPromise}
@@ -151,3 +150,5 @@ Route: <input bind:value={selectedRouteName} list="routes" />
   name="direction"
 />
 <Picker promise={stopsPromise} bind:selection={selectedStop} name="stop" />
+<slot />
+</GeoLocationPicker>

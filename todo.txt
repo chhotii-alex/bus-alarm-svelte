@@ -1,4 +1,5 @@
 
+* layout of stop picker
 * user manual text
 * collapse/expand individual transits
 * clock/time

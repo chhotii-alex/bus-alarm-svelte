@@ -4,6 +4,7 @@
   // default to Park Street Station, Boston
   export let latitude = 42.356334;
   export let longitude = -71.062365;
+  export let geeky = false;
   let errorText = "";
 
   let googleMap = null;
@@ -81,27 +82,51 @@
   {errorText}
 </h1>
 
-Google API stuff here
-<div id="map"></div>
+<div class="wrapper">
+  <div id="map"></div>
 
-Latitude:<input
-  value={latitude}
-  on:input={(e) => updateCoordinate(e.target.value, "lat")}
-/>
-<br />
-Longitude:
-<input
-  value={longitude}
-  on:input={(e) => updateCoordinate(e.target.value, "lng")}
-/>
-<br />
+  <div class="fields">
+    {#if geeky}
+      Latitude:<input
+        value={latitude}
+        on:input={(e) => updateCoordinate(e.target.value, "lat")}
+      />
+      <br />
+      Longitude:
+      <input
+        value={longitude}
+        on:input={(e) => updateCoordinate(e.target.value, "lng")}
+      />
+      <br />
+    {/if}
 
-Search near address:
-<input on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)} />
+    Search near address:
+    <input on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)} />
+    <br/>
+    <slot />
+  </div>
+</div>
 
 <style>
   #map {
     width: 400px;
     height: 400px;
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 10px;
+  }
+  .map {
+    grid-column: 1;
+  }
+  .fields {
+    grid-column: 2;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .wrapper {
+      display: block;
+    }
   }
 </style>
