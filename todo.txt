@@ -1,5 +1,4 @@
 
-* up on github.io?
 * layout of stop picker
 * user manual text
 * collapse/expand individual transits
@@ -23,3 +22,5 @@
 * allow playing uploaded .mp3
 * pay attention to alert.attributes.active_period
 * refactor: clean code recommendations
+* up on github.io? (how to deal with keys?)
+

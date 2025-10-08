@@ -126,29 +126,30 @@
   ></script>
 </svelte:head>
 
-<GeoLocationPicker bind:latitude bind:longitude >
+<GeoLocationPicker bind:latitude bind:longitude>
+  <label>
+    Route: <input bind:value={selectedRouteName} list="routes" />
 
-Route: <input bind:value={selectedRouteName} list="routes" />
+    {#if routesPromise}
+      {#await routesPromise}
+        waiting for routes list...
+      {:then routes}
+        <datalist id="routes">
+          {#each routes as routeInfo}
+            <option value={routeInfo[0]} />
+          {/each}
+        </datalist>
+      {:catch error}
+        <i> Failed to fetch route list: {error} </i>
+      {/await}
+    {/if}
+  </label>
 
-{#if routesPromise}
-  {#await routesPromise}
-    waiting for routes list...
-  {:then routes}
-    <datalist id="routes">
-      {#each routes as routeInfo}
-        <option value={routeInfo[0]} />
-      {/each}
-    </datalist>
-  {:catch error}
-    <i> Failed to fetch route list: {error} </i>
-  {/await}
-{/if}
-
-<Picker
-  promise={directionsPromise}
-  bind:selection={selectedDirection}
-  name="direction"
-/>
-<Picker promise={stopsPromise} bind:selection={selectedStop} name="stop" />
-<slot />
+  <Picker
+    promise={directionsPromise}
+    bind:selection={selectedDirection}
+    name="direction"
+  />
+  <Picker promise={stopsPromise} bind:selection={selectedStop} name="stop" />
+  <slot />
 </GeoLocationPicker>

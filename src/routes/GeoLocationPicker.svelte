@@ -100,9 +100,14 @@
       <br />
     {/if}
 
-    Search near address:
-    <input on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)} />
-    <br/>
+    <label>
+      Search near address:
+      <input
+        on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)}
+        size="60"
+      />
+    </label>
+    <br />
     <slot />
   </div>
 </div>
