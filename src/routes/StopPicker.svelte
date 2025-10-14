@@ -127,8 +127,11 @@
 </svelte:head>
 
 <GeoLocationPicker bind:latitude bind:longitude>
-  <label>
-    Route: <input bind:value={selectedRouteName} list="routes" />
+  <span class="fieldLabel" >
+	Route:
+  </span>
+  <span>
+    <input bind:value={selectedRouteName} list="routes" class="wide" />
 
     {#if routesPromise}
       {#await routesPromise}
@@ -143,7 +146,7 @@
         <i> Failed to fetch route list: {error} </i>
       {/await}
     {/if}
-  </label>
+  </span>
 
   <Picker
     promise={directionsPromise}

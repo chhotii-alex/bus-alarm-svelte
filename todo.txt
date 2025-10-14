@@ -1,9 +1,9 @@
 
-* layout of stop picker
 * user manual text
 * collapse/expand individual transits
 * clock/time
 * npm run format as a git commit hook?
+* see warnings in console
 * use route color
 * SVG icon for settings button
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
