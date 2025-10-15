@@ -110,6 +110,7 @@
       <span>
       <input class="wide"
         on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)}
+	on:blur={(e => geoFromAddress(e.target.value))}
       />
       </span>
     <slot />
