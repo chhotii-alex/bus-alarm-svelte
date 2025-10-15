@@ -30,6 +30,7 @@
   let beepTimerID = null;
   let myAudioContext = null;
   let audioOffsetTime = null;
+  let hidden = false;
 
   onMount(() => {
     getPrediction();
@@ -239,6 +240,10 @@
     showingDetails = false;
   }
 
+  function toggleHidden() {
+    hidden = !hidden;
+  }
+
   function removeTransit() {
     removeFromParent(transit);
   }
@@ -270,7 +275,8 @@
   on:drop={drop}
   draggable="true"
 >
-  <legend> {transit.nickname} </legend>
+  <legend on:click={toggleHidden}> {transit.nickname} </legend>
+  {#if !hidden}
   <div class="transit">
     Next {transit.routeName}
     from {transit.stopName}
@@ -297,6 +303,7 @@
     </div>
   {:else}
     <button on:click={showDetails}>Show Details</button>
+  {/if}
   {/if}
 </fieldset>
 

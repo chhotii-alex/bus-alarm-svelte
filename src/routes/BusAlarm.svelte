@@ -3,6 +3,7 @@
   import TransitPrediction from "./TransitPrediction.svelte";
   import AddTransitWidget from "./AddTransitWidget.svelte";
   import ClockWidget from "./ClockWidget.svelte";
+  import Instructions from "./Instructions.svelte";
 
   const isBrowser = typeof window !== "undefined";
 
@@ -81,7 +82,7 @@
 </details>
 <details>
   <summary> User Manual </summary>
-  Instructions for using Bus Alarm here
+  <Instructions />
 </details>
 
 {#each transits as transit (transit.id)}

@@ -1,6 +1,5 @@
 
 * user manual text
-* collapse/expand individual transits
 * clock/time
 * npm run format as a git commit hook?
 * see warnings in console
