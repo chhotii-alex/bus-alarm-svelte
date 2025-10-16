@@ -1,43 +1,44 @@
       <div class="helptext" v-show="visible" >
-         Welcome to the Bus Alarm, a handy tool for helping you keep track of when your Boston-area
-        <a href="https://mbta.com/" target=”_blank” >MBTA</a> 
-             bus, trolley, or other mode of transport is expected to be at your nearest
-      stop. Keeping an eye on these predictions is especially helpful if you need to catch an infrequently-running
-       bus. Don't you just hate standing by the side of the road, in the weather, waiting at the bus stop for half an
-         hour or more? Keep a close eye on those predictions, and you can spend up to the last reasonable moment
+         Welcome to the Bus Alarm, a handy tool for helping you leave in just time to catch your
+        <a href="https://mbta.com/" target=”_blank” >Boston-area MBTA</a> 
+             bus, trolley, or other mode of transport.
+	     You don't want to miss the bus... but nor do you want to stand by the side of the road,
+	     in the weather, much longer than you need to.
+         Bus Alarm keeps track of when that bus is expected, so you can spend up to the last reasonable moment
         in your warm, dry home or office before scampering to the bus stop (or T stop, or ferry dock...) 
          just in time! <p/>
          <h3>Disclaimer on the Bus Alarm predictions</h3>
             Bus Alarm advises you on when to head out the door based on a feed of real-time predictions provided by
-         the MBTA. The MBTA does the best it can to predict when each bus, train, or trolley out there will arrive
+         the MBTA. The MBTA does its best to predict when each bus, train, or trolley out there will arrive
          at and depart from each stop on its route, based on real-time GPS tracking of each vehicle, its planned
          schedule, and past data. However, traffic and commuters are inherently chaotic. Who knows when a bus that
          normally takes 5 minutes to get from point A to point B will hit a traffic snag, and leave you waiting
-         much longer&mdash; or, conversely, and bus that takes 15 minutes to fight through the typical rush-hour
+         much longer&mdash; or, conversely, a bus that takes 15 minutes to fight through the typical rush-hour
           snarls will cruise along in an unexpected spell of smooth sailing. Often the MBTA's predictions on when
-            your bus will come are uncannily accurate; however it <em>will happen</em> that sometimes the 
+            your bus will come are uncannily accurate; however, it <em>will happen</em> that sometimes the 
           prediction will be <em>astonishingly wrong</em>. So, please:
           <ul>
           <li>If you <em>must</em> catch a particular bus, plan to get to the stop <em>early</em>.</li>
-          <li>Be prepared to wait. I'm trying to minimize your waiting at your stop with this tool. But I'm not
-            psychic, and I can't do anything about the stupidity of traffic. Bring something to read while you
-             wait (but don't get too absorbed, because a bus driver may not stop to pick you up if you appear
+          <li>Be prepared to wait. This tool is trying to minimize your wait at the stop. But it's not
+            psychic, and can't do anything about the stupidity of traffic. Bring something to read while you
+             wait. (But don't get too absorbed, because a bus driver may not stop to pick you up if you appear
              to be ignoring the bus!)</li>
           <li>Lobby your State Legislature for more transportation funding going to the MBTA, so that they can
-             bring you more-frequent buses, and less transportation funding going to <em>cars</em>, which are the agents
+             bring you more-frequent buses, and less transportation funding going to <em>cars</em>, the agents
             of traffic chaos.</li>
           </ul>
           Also note that the MBTA revises predictions as each vehicle is en route. Thus, you may see the time until
           your bus will arrive smoothly counting down, and then suddenly jump up. This is normal; the prediction
-          was revised when the bus hit a delay. If you have your Bus Alarm set to ignore buses that are coming too
-          soon for you to possibly catch, you may even see times fluctuate from, say, 6 minutes to 60 minutes and 
+          was revised when the bus hit a delay. If you have your Bus Alarm set to ignore imminently arriving buses,
+          you may even see times fluctuate from, say, 6 minutes to 60 minutes and 
           back to 6. The Bus Alarm revises its decision on whether to show you the bus that's almost at your stop
           as the arrival time prediction is revised... so you can revise your decision regarding whether to scramble
           out the door now, or wait.
         <h3> Setting up your Bus Alarms</h3>
-        First, specify where you are, and which bus, train, or ferry you want to catch, in which direction.
-         If you don't see the map, open the "Route, Direction, and Stop Picker" at the bottom of the page. 
-        If you know your latitude and longitude, you can type those in; or, you can have the Google Map look up the
+	To set up a new bus alarm, open the "Route, Direction, and Stop Picker" at the bottom of the page. 
+        First, specify where you are traveling from.
+	You can enter  latitude and longitude;
+	or, you can have the Google Map look up the
           coordinates of any address by typing it into the Search Near Address field and hitting the tab key; or, 
         you can drag your location into view inside the map.<p/>
           Next, search for a route: a bus number, or a train or trolley line, or a boat. Start typing the bus number,

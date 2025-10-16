@@ -76,10 +76,7 @@
   }
 </script>
 
-<details>
-  <summary> Current Time </summary>
-  <ClockWidget />
-</details>
+<ClockWidget />
 <details>
   <summary> User Manual </summary>
   <Instructions />

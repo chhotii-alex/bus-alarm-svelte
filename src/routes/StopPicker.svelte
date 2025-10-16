@@ -16,6 +16,7 @@
   let latitude = 42.356334;
   let longitude = -71.062365;
 
+  // this is a name -> ID lookup for all the MBTA routes
   let routes = new Map();
   $: selectedRouteID = routes.get(selectedRouteName);
 
@@ -39,6 +40,57 @@
       return routes;
     })();
   });
+
+  let nearbyRouteSet = null;
+  
+  function shouldShowRoute(routeID, theSet) {
+    if (theSet === null) {
+       return true;
+    }
+    else {
+      return theSet.has(routeID);
+    }
+  }
+
+  let routesForStopLookup = {};
+
+  async function getNearbyRoutes(lat, long) {
+    let newSet = new Set();
+    let stops = [];
+    let url =
+        "https://api-v3.mbta.com/stops?" +
+        "filter[latitude]=" +
+        lat +
+        "&filter[longitude]=" +
+        long +
+        "&filter[radius]=" +
+        0.04 +
+        "&sort=distance" +
+	"&page[limit]=100";
+    const response = await mbtaFetch(url);
+    const data = await response.json();
+    for (let [index, stopData] of data.data.entries()) {
+        let id = stopData.id;
+	if (!(id in routesForStopLookup)) {
+         	let url = 
+                     "https://api-v3.mbta.com/routes?" +
+                 	`filter[stop]=${id}`;
+	         const response = await mbtaFetch(url);
+	         const routeData = await response.json();
+		 routesForStopLookup[id] = routeData.data.map(d => d.id);
+        }
+        if (lat != latitude || long != longitude) return;
+	for (let routeID of routesForStopLookup[id]) {
+	  newSet.add(routeID);
+	  if (nearbyRouteSet !== null) {
+        	  nearbyRouteSet.add(routeID);
+	  }
+	}
+    }
+    nearbyRouteSet = newSet;
+  }
+
+  $: getNearbyRoutes(latitude, longitude);
 
   let directionsLookup = {};
 
@@ -80,9 +132,9 @@
       let url =
         "https://api-v3.mbta.com/stops?" +
         "filter[latitude]=" +
-        latitude +
+        lat +
         "&filter[longitude]=" +
-        longitude +
+        long +
         "&filter[radius]=" +
         0.04 +
         "&filter[route]=" +
@@ -139,7 +191,9 @@
       {:then routes}
         <datalist id="routes">
           {#each routes as routeInfo}
-            <option value={routeInfo[0]} />
+	    {#if shouldShowRoute(routeInfo[1], nearbyRouteSet) }
+              <option value={routeInfo[0]} />
+	    {/if}
           {/each}
         </datalist>
       {:catch error}

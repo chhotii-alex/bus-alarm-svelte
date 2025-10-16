@@ -4,7 +4,7 @@
   // default to Park Street Station, Boston
   export let latitude = 42.356334;
   export let longitude = -71.062365;
-  export let geeky = false;
+  export let geeky = true;
   let errorText = "";
 
   let googleMap = null;
