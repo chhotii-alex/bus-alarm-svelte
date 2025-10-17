@@ -42,12 +42,11 @@
   });
 
   let nearbyRouteSet = null;
-  
+
   function shouldShowRoute(routeID, theSet) {
     if (theSet === null) {
-       return true;
-    }
-    else {
+      return true;
+    } else {
       return theSet.has(routeID);
     }
   }
@@ -58,34 +57,32 @@
     let newSet = new Set();
     let stops = [];
     let url =
-        "https://api-v3.mbta.com/stops?" +
-        "filter[latitude]=" +
-        lat +
-        "&filter[longitude]=" +
-        long +
-        "&filter[radius]=" +
-        0.04 +
-        "&sort=distance" +
-	"&page[limit]=100";
+      "https://api-v3.mbta.com/stops?" +
+      "filter[latitude]=" +
+      lat +
+      "&filter[longitude]=" +
+      long +
+      "&filter[radius]=" +
+      0.04 +
+      "&sort=distance" +
+      "&page[limit]=100";
     const response = await mbtaFetch(url);
     const data = await response.json();
     for (let [index, stopData] of data.data.entries()) {
-        let id = stopData.id;
-	if (!(id in routesForStopLookup)) {
-         	let url = 
-                     "https://api-v3.mbta.com/routes?" +
-                 	`filter[stop]=${id}`;
-	         const response = await mbtaFetch(url);
-	         const routeData = await response.json();
-		 routesForStopLookup[id] = routeData.data.map(d => d.id);
+      let id = stopData.id;
+      if (!(id in routesForStopLookup)) {
+        let url = "https://api-v3.mbta.com/routes?" + `filter[stop]=${id}`;
+        const response = await mbtaFetch(url);
+        const routeData = await response.json();
+        routesForStopLookup[id] = routeData.data.map((d) => d.id);
+      }
+      if (lat != latitude || long != longitude) return;
+      for (let routeID of routesForStopLookup[id]) {
+        newSet.add(routeID);
+        if (nearbyRouteSet !== null) {
+          nearbyRouteSet.add(routeID);
         }
-        if (lat != latitude || long != longitude) return;
-	for (let routeID of routesForStopLookup[id]) {
-	  newSet.add(routeID);
-	  if (nearbyRouteSet !== null) {
-        	  nearbyRouteSet.add(routeID);
-	  }
-	}
+      }
     }
     nearbyRouteSet = newSet;
   }
@@ -179,9 +176,7 @@
 </svelte:head>
 
 <GeoLocationPicker bind:latitude bind:longitude>
-  <span class="fieldLabel" >
-	Route:
-  </span>
+  <span class="fieldLabel"> Route: </span>
   <span>
     <input bind:value={selectedRouteName} list="routes" class="wide" />
 
@@ -191,9 +186,9 @@
       {:then routes}
         <datalist id="routes">
           {#each routes as routeInfo}
-	    {#if shouldShowRoute(routeInfo[1], nearbyRouteSet) }
+            {#if shouldShowRoute(routeInfo[1], nearbyRouteSet)}
               <option value={routeInfo[0]} />
-	    {/if}
+            {/if}
           {/each}
         </datalist>
       {:catch error}

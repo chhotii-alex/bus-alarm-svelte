@@ -286,42 +286,42 @@
 >
   <legend on:click={toggleHidden}> {transit.nickname} </legend>
   {#if !hidden}
-  <div class="transit">
-    Next {transit.routeName}
-    from {transit.stopName}
-    going {transit.directionName}:
-    {soonest}
-  </div>
-  {#if errorText}
-    <i> Error: {errorText} </i>
-  {/if}
-  <AlertsDisplay {alerts} />
-  {#if showingDetails}
-     <div class="settingsBox">
-      <button class="right" on:click={hideDetails}> X </button>
-    All predicted times:
-    <ul>
-      {#each prediction.times as time}
-        <li>
-          {justTimePart(time)} ( in {minutesFromNow(time, now)} minutes )
-        </li>
-      {/each}
-    </ul>
+    <div class="transit">
+      Next {transit.routeName}
+      from {transit.stopName}
+      going {transit.directionName}:
+      {soonest}
     </div>
-  {:else}
-    <button on:click={showDetails}>Show Details</button>
-  {/if}
-  {#if showingSettings }
-    <div class="settingsBox">
-      <button class="right" on:click={hideSettings}> X </button>
-      <TransitSettings bind:transit {save} bind:shouldDoBeep />
-      <button class="delete" on:click={removeTransit}>Delete</button>
-    </div>
-  {:else}
-    <button on:click={showSettings}>
-      <img src="gear-svgrepo-com.svg" width="16px" height="16px" />
-    </button>
-  {/if}
+    {#if errorText}
+      <i> Error: {errorText} </i>
+    {/if}
+    <AlertsDisplay {alerts} />
+    {#if showingDetails}
+      <div class="settingsBox">
+        <button class="right" on:click={hideDetails}> X </button>
+        All predicted times:
+        <ul>
+          {#each prediction.times as time}
+            <li>
+              {justTimePart(time)} ( in {minutesFromNow(time, now)} minutes )
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {:else}
+      <button on:click={showDetails}>Show Details</button>
+    {/if}
+    {#if showingSettings}
+      <div class="settingsBox">
+        <button class="right" on:click={hideSettings}> X </button>
+        <TransitSettings bind:transit {save} bind:shouldDoBeep />
+        <button class="delete" on:click={removeTransit}>Delete</button>
+      </div>
+    {:else}
+      <button on:click={showSettings}>
+        <img src="gear-svgrepo-com.svg" width="16px" height="16px" />
+      </button>
+    {/if}
   {/if}
 </fieldset>
 

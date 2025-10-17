@@ -13,21 +13,20 @@
 </script>
 
 <p>
-    <label>
+  <label>
     <input
       type="checkbox"
       id="ignoreEarlyBusses"
       bind:checked={transit.ignoreEarlyBusses}
       on:change={handleInput}
     />
-    Don&apos;t show any early bus
-      coming before
-      <input
-        type="time"
-        bind:value={transit.tooEarlyTime}
-        on:input={handleInput}
-      />
-    </label>
+    Don&apos;t show any early bus coming before
+    <input
+      type="time"
+      bind:value={transit.tooEarlyTime}
+      on:input={handleInput}
+    />
+  </label>
 </p>
 <p>
   <ColorAlertSetting

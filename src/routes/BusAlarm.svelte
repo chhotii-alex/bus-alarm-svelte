@@ -81,9 +81,9 @@
   }
 </script>
 
-<button on:click={toggleHelp} >
+<button on:click={toggleHelp}>
   {#if showingHelp}
-     Hide
+    Hide
   {/if}
   User Manual
 </button>

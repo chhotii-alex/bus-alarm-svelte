@@ -87,32 +87,31 @@
 
   <div class="fields">
     {#if geeky}
-    <span class="fieldLabel">
-      Latitude:
-      </span>
+      <span class="fieldLabel"> Latitude: </span>
       <span>
-      <input size="10"
-        value={latitude}
-        on:input={(e) => updateCoordinate(e.target.value, "lat")}
-      />
+        <input
+          size="10"
+          value={latitude}
+          on:input={(e) => updateCoordinate(e.target.value, "lat")}
+        />
       </span>
-      <span class="fieldLabel" >
-            Longitude:
-      </span>
+      <span class="fieldLabel"> Longitude: </span>
       <span>
-      <input size="10"
-        value={longitude}
-        on:input={(e) => updateCoordinate(e.target.value, "lng")}
-      />
+        <input
+          size="10"
+          value={longitude}
+          on:input={(e) => updateCoordinate(e.target.value, "lng")}
+        />
       </span>
     {/if}
-      <span class="fieldLabel" >Search near address:</span>
-      <span>
-      <input class="wide"
+    <span class="fieldLabel">Search near address:</span>
+    <span>
+      <input
+        class="wide"
         on:keyup={(e) => processAddressOnEnter(e.key, e.target.value)}
-	on:blur={(e => geoFromAddress(e.target.value))}
+        on:blur={(e) => geoFromAddress(e.target.value)}
       />
-      </span>
+    </span>
     <slot />
   </div>
 </div>
@@ -153,29 +152,29 @@
   @media only screen and (max-width: 800px) {
     .fields {
       grid-template-columns: 1fr 2fr;
-      }
+    }
   }
   @media only screen and (max-width: 700px) {
     .fields {
       display: block;
     }
-  .fields :global(span.fieldLabel) {
-    display: block;
-    text-align: center;
+    .fields :global(span.fieldLabel) {
+      display: block;
+      text-align: center;
+    }
+    .fields :global(span) {
+      display: block;
+      text-align: center;
+    }
+    .fields :global(input) {
+      margin: 0 auto;
+      width: auto;
+    }
+    .fields :global(button) {
+      display: block;
+      margin: 0.5em auto;
+    }
   }
-  .fields :global(span) {
-    display: block;
-    text-align: center;
-  }
-  .fields :global(input) {
-    margin: 0 auto;
-    width: auto;
-  }
-  .fields :global(button) {
-    display: block;
-    margin: 0.5em auto;
-  }
-}
   @media only screen and (max-width: 600px) {
     #map {
       width: 98%;
@@ -187,11 +186,11 @@
       display: grid;
       grid-column: 2;
     }
-  .fields :global(span.fieldLabel) {
-    text-align: right;
-  }
-  .fields :global(span) {
-    text-align: left;
-  }
+    .fields :global(span.fieldLabel) {
+      text-align: right;
+    }
+    .fields :global(span) {
+      text-align: left;
+    }
   }
 </style>

@@ -51,11 +51,13 @@
   bind:stopName
 >
   {#if selectedRouteID && selectedStop && stopName}
-    <span class="fieldLabel" >
-        Nickname:
-    </span>
+    <span class="fieldLabel"> Nickname: </span>
     <span>
-        <input class="wide" bind:value={nickname} on:keyup={(e) => onEnter(e.key, addStop)} />
+      <input
+        class="wide"
+        bind:value={nickname}
+        on:keyup={(e) => onEnter(e.key, addStop)}
+      />
     </span>
     <button on:click={addStop}> Add Stop to Watch List </button>
   {/if}
