@@ -25,6 +25,7 @@
   let now = new Date();
   let color = "#FFFFFF";
   let showingDetails = false;
+  let showingSettings = false;
   let shouldDoBeep = false; // whether we should beep when bus approaching
   let beepsOn = false; // ON when we both want beeps, and a bus is approaching
   let beepTimerID = null;
@@ -240,6 +241,14 @@
     showingDetails = false;
   }
 
+  function showSettings() {
+    showingSettings = true;
+  }
+
+  function hideSettings() {
+    showingSettings = false;
+  }
+
   function toggleHidden() {
     hidden = !hidden;
   }
@@ -288,6 +297,8 @@
   {/if}
   <AlertsDisplay {alerts} />
   {#if showingDetails}
+     <div class="settingsBox">
+      <button class="right" on:click={hideDetails}> X </button>
     All predicted times:
     <ul>
       {#each prediction.times as time}
@@ -296,13 +307,20 @@
         </li>
       {/each}
     </ul>
-    <div class="details clearfix">
-      <button class="right" on:click={hideDetails}> X </button>
-      <TransitSettings bind:transit {save} bind:shouldDoBeep />
-      <button class="right delete" on:click={removeTransit}>Delete</button>
     </div>
   {:else}
     <button on:click={showDetails}>Show Details</button>
+  {/if}
+  {#if showingSettings }
+    <div class="settingsBox">
+      <button class="right" on:click={hideSettings}> X </button>
+      <TransitSettings bind:transit {save} bind:shouldDoBeep />
+      <button class="delete" on:click={removeTransit}>Delete</button>
+    </div>
+  {:else}
+    <button on:click={showSettings}>
+      <img src="gear-svgrepo-com.svg" width="16px" height="16px" />
+    </button>
   {/if}
   {/if}
 </fieldset>
@@ -312,19 +330,16 @@
     font-size: 48px;
     font-weight: 700;
   }
-  .details {
-    border: 1px solid black;
-  }
   .right {
     float: right;
     background-color: inherit;
   }
-  .clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
   .delete {
     color: maroon;
+  }
+  .settingsBox {
+    border: solid 1px black;
+    padding: 0.5em;
+    margin: 0.5em;
   }
 </style>

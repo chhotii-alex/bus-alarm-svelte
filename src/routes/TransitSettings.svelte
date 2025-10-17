@@ -26,14 +26,12 @@
       on:change={handleInput}
     />
     <label for="ignoreEarlyBusses"> Don&apos;t show any early bus</label>
-    {#if transit.ignoreEarlyBusses}
       coming before
       <input
         type="time"
         bind:value={transit.tooEarlyTime}
         on:input={handleInput}
       />
-    {/if}
   </span>
 </p>
 <p>

@@ -5,7 +5,6 @@
 * see "Sparse Fieldsets" in mbta api doc?
 * see warnings in console
 * use route color
-* SVG icon for settings button
 * meta viewport and media queries to adapt to various screens (esp. iPhone)
 * see to-do's in code
 * port to new version of svelte?
