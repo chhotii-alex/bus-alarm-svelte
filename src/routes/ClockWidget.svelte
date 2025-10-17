@@ -30,13 +30,13 @@
   }
 </script>
 
-<p>
+<span>
   {timeString(now)}
-</p>
+</span>
 
 <style>
-  p {
-    margin: auto;
-    text-align: center;
+  span {
+    float: right;
+    text-align: right;
   }
 </style>

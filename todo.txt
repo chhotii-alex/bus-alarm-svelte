@@ -1,6 +1,5 @@
 
 * user manual text
-* clock/time
 * npm run format as a git commit hook?
 * see "Sparse Fieldsets" in mbta api doc?
 * see warnings in console
@@ -19,6 +18,8 @@
 * npm audit (why error on fix?)
 * allow playing uploaded .mp3
 * pay attention to alert.attributes.active_period
+* confirmation of delete alarm
 * refactor: clean code recommendations
 * up on github.io? (how to deal with keys?)
+* undo/redo system?
 

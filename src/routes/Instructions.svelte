@@ -68,7 +68,7 @@
            Should you be dressed by now? Do you have time to shampoo, or to cook eggs? Find out in a glance by
          specifying when your Bus Alarm goes to Green Alert, which will indicate when you need to switch gears from
           going around your usual business to expecting the bus to come pretty soon.<p/>
-         Of course, there's no point in getting your butt in gear for a bus that comes way earlier than when you
+         Of course, there's no need for notifications for  a bus that comes way earlier than when you
            need to go, so you can check the option to not show you early buses  
             (&ldquo;early&rdquo; being defined as a bus predicted
            to come before the specified time).

@@ -74,13 +74,23 @@
     transits.splice(toIndex, 0, movedItem);
     propChanges();
   }
+
+  let showingHelp = false;
+  function toggleHelp() {
+    showingHelp = !showingHelp;
+  }
 </script>
 
+<button on:click={toggleHelp} >
+  {#if showingHelp}
+     Hide
+  {/if}
+  User Manual
+</button>
 <ClockWidget />
-<details>
-  <summary> User Manual </summary>
+{#if showingHelp}
   <Instructions />
-</details>
+{/if}
 
 {#each transits as transit (transit.id)}
   <TransitPrediction
