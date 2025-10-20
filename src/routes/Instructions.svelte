@@ -103,17 +103,17 @@
     >audible</em
   >
   alert, check the &ldquo;Beep during Yellow Alert&rdquo; option. (The Bus Alarm
-  will only beep during the time window that you specify.) Beeping is off by
-  default, and if you re-load this page, any audible alerts will be turned off.
+  will only beep during the time window that you specify.) Beeping is off by default,
+  and if you re-load this page, any audible alerts will be turned off.
   <h3>Red Alerts, and ignoring buses you've missed</h3>
   Suppose you want to allow 5 minutes to walk to the bus stop... although maybe,<em
     >just maybe,</em
   >
-  if you ran, and the bus is just a bit tardy, you could make it to a bus
-  arriving in 2 minutes. Set the Red Alert to start when the bus is 5 minutes
-  away. Since you've <em>probably</em> missed any bus that's predicted to come within
-  2 minutes, you may want to check the option to not show &ldquo;immediate&rdquo;
-  buses, and define &ldquo;immediate&rdquo; as those coming within 2 minutes.
+  if you ran, and the bus is just a bit tardy, you could make it to a bus arriving
+  in 2 minutes. Set the Red Alert to start when the bus is 5 minutes away. Since
+  you've <em>probably</em> missed any bus that's predicted to come within 2 minutes,
+  you may want to check the option to not show &ldquo;immediate&rdquo; buses, and
+  define &ldquo;immediate&rdquo; as those coming within 2 minutes.
 </div>
 
 <style>

@@ -41,8 +41,6 @@
     })();
   });
 
-  let nearbyRouteSet = null;
-
   function shouldShowRoute(routeID, theSet) {
     if (theSet === null) {
       return true;
@@ -51,31 +49,18 @@
     }
   }
 
-  let routesForStopLookup = {};
-
   /*
     Populates the collection of routes served by nearby stops,
     which will constrain what routes appear in the datalist
     associated with the route input.
     This will be fired whenever latitude and/or longitude change.
     Does queries for up to 100 of the closest stops.
-    TODO: this implementation may be questionable, because it
-    does a separate query for each stop (results for each stop
-    are cached). It may be better to make one routes API query
-    with multiple comma-separated stop ids instead.
-    Each routes query filtered on a single stop typically takes
-    26 to 30 ms.
-
-    To avoid unneccessary queries, and to avoid using
-    a stale result, this function checks the component-scope values
-    of latitude and longitude again each time through the loop, and
-    exits if they have again changed (though the cached results
-    accumulated so far are retained and will probably be useful.)
-    
+    TODO: If we scroll around too much we get error 429,
+    rate limit exceeded. How to throttle rate of the first
+    query?
   */
   async function getNearbyRoutes(lat, long) {
     let newSet = new Set();
-    let stops = [];
     let url =
       "https://api-v3.mbta.com/stops?" +
       "filter[latitude]=" +
@@ -86,28 +71,25 @@
       0.04 +
       "&sort=distance" +
       "&page[limit]=100";
-    const response = await mbtaFetch(url);
-    const data = await response.json();
-    for (let [index, stopData] of data.data.entries()) {
-      let id = stopData.id;
-      if (!(id in routesForStopLookup)) {
-        let url = "https://api-v3.mbta.com/routes?" + `filter[stop]=${id}`;
-        const response = await mbtaFetch(url);
-        const routeData = await response.json();
-        routesForStopLookup[id] = routeData.data.map((d) => d.id);
-      }
-      if (lat != latitude || long != longitude) return;
-      for (let routeID of routesForStopLookup[id]) {
-        newSet.add(routeID);
-        if (nearbyRouteSet !== null) {
-          nearbyRouteSet.add(routeID);
-        }
-      }
+    if (lat !== latitude || long !== longitude) {
+      return null;
     }
-    nearbyRouteSet = newSet;
+    let response = await mbtaFetch(url);
+    const data = await response.json();
+    let stopList = data.data.map((stopData) => stopData.id).join();
+    url = "https://api-v3.mbta.com/routes?" + `filter[stop]=${stopList}`;
+    if (lat !== latitude || long !== longitude) {
+      return null;
+    }
+    response = await mbtaFetch(url);
+    const routeData = await response.json();
+    for (let route of routeData.data) {
+      newSet.add(route.id);
+    }
+    return newSet;
   }
 
-  $: getNearbyRoutes(latitude, longitude);
+  $: nearbyRoutePromise = getNearbyRoutes(latitude, longitude);
 
   let directionsLookup = {};
 
@@ -205,11 +187,17 @@
         waiting for routes list...
       {:then routes}
         <datalist id="routes">
-          {#each routes as routeInfo}
-            {#if shouldShowRoute(routeInfo[1], nearbyRouteSet)}
+          {#await nearbyRoutePromise}
+            {#each routes as routeInfo}
               <option value={routeInfo[0]} />
-            {/if}
-          {/each}
+            {/each}
+          {:then nearbyRouteSet}
+            {#each routes as routeInfo}
+              {#if shouldShowRoute(routeInfo[1], nearbyRouteSet)}
+                <option value={routeInfo[0]} />
+              {/if}
+            {/each}
+          {/await}
         </datalist>
       {:catch error}
         <i> Failed to fetch route list: {error} </i>
