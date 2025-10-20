@@ -53,6 +53,26 @@
 
   let routesForStopLookup = {};
 
+  /*
+    Populates the collection of routes served by nearby stops,
+    which will constrain what routes appear in the datalist
+    associated with the route input.
+    This will be fired whenever latitude and/or longitude change.
+    Does queries for up to 100 of the closest stops.
+    TODO: this implementation may be questionable, because it
+    does a separate query for each stop (results for each stop
+    are cached). It may be better to make one routes API query
+    with multiple comma-separated stop ids instead.
+    Each routes query filtered on a single stop typically takes
+    26 to 30 ms.
+
+    To avoid unneccessary queries, and to avoid using
+    a stale result, this function checks the component-scope values
+    of latitude and longitude again each time through the loop, and
+    exits if they have again changed (though the cached results
+    accumulated so far are retained and will probably be useful.)
+    
+  */
   async function getNearbyRoutes(lat, long) {
     let newSet = new Set();
     let stops = [];
