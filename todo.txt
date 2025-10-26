@@ -1,4 +1,5 @@
 
+* only one alarm at a time should have any audio 
 * sound for red alert
 * npm run format as a git commit hook?
 * see "Sparse Fieldsets" in mbta api doc?
@@ -24,3 +25,8 @@
 * undo/redo system?
 * user manual text
 
+Yellow alert: 
+aspiring from Alex_MakeMusic https://pixabay.com/users/alex_makemusic-24186663/
+
+Red alert:
+A hero of the 80's from Grand_Project https://pixabay.com/users/grand_project-19033897/
