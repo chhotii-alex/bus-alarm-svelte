@@ -1,5 +1,4 @@
 
-* placement of details and gear buttons
 * sound for red alert
 * npm run format as a git commit hook?
 * see "Sparse Fieldsets" in mbta api doc?

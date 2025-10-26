@@ -318,7 +318,7 @@
         <button class="delete" on:click={removeTransit}>Delete</button>
       </div>
     {:else}
-      <button on:click={showSettings}>
+      <button class="right" on:click={showSettings}>
         <img src="gear-svgrepo-com.svg" width="16px" height="16px" />
       </button>
     {/if}
