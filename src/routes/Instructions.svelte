@@ -118,7 +118,8 @@
     alerted when it's time to get going. To get an <em>audible</em>
     alert, check the &ldquo;Beep during Yellow Alert&rdquo; option. (The Bus Alarm
     will only beep during the time window that you specify.) Beeping is off by default,
-    and if you re-load this page, any audible alerts will be turned off.
+    and if you re-load this page, any audible alerts will be turned off. To avoid
+    cacophony, only the audio alerts of the top-most Bus Alarm are enabled.
   </p>
   <h3>Red Alerts, and ignoring buses you've missed</h3>
   <p>

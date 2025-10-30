@@ -17,6 +17,7 @@
   export let removeFromParent;
   export let swap;
   export let save;
+  export let soundAllowed;
 
   let prediction;
   let alerts = [];
@@ -55,7 +56,7 @@
   }
 
   $: setBeepInterval(transit.beepRepeatInterval);
-  $: if (shouldDoBeep) makeAudioContext();
+  $: if (shouldDoBeep && soundAllowed) makeAudioContext();
 
   function makeAudioContext() {
     if (!myAudioContext) {
@@ -69,6 +70,7 @@
   }
 
   function maybeBeep() {
+    if (!soundAllowed) return;
     if (!beepsOn) return;
     // TODO configurable
     let vol = 100;
@@ -210,7 +212,7 @@
           color = "OrangeRed";
         } else if (minutes < transit.yellowMinutes) {
           color = "yellow";
-          if (shouldDoBeep) {
+          if (shouldDoBeep && soundAllowed) {
             let nowMinutes = now.getHours() * 60 + now.getMinutes();
             if (
               nowMinutes >= timeStringToMinutes(transit.minBeepTime) &&
@@ -314,7 +316,7 @@
     {#if showingSettings}
       <div class="settingsBox">
         <button class="right" on:click={hideSettings}> X </button>
-        <TransitSettings bind:transit {save} bind:shouldDoBeep />
+        <TransitSettings bind:transit {save} bind:shouldDoBeep {soundAllowed} />
         <button class="delete" on:click={removeTransit}>Delete</button>
       </div>
     {:else}

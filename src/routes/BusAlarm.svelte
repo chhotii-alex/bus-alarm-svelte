@@ -92,12 +92,13 @@
   <Instructions />
 {/if}
 
-{#each transits as transit (transit.id)}
+{#each transits as transit, i (transit.id)}
   <TransitPrediction
     {transit}
     removeFromParent={removeTransit}
     save={saveAll}
     {swap}
+    soundAllowed={i == 0}
   />
 {/each}
 

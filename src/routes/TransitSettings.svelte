@@ -5,6 +5,7 @@
   export let transit;
   export let save;
   export let shouldDoBeep;
+  export let soundAllowed;
 
   function handleInput(e) {
     transit = transit;
@@ -41,7 +42,9 @@
     bind:minutes={transit.yellowMinutes}
     inputHandler={handleInput}
   />
-  <BeepSettings bind:shouldDoBeep {transit} {handleInput} />
+  {#if soundAllowed}
+    <BeepSettings bind:shouldDoBeep {transit} {handleInput} />
+  {/if}
 </p>
 <p>
   <ColorAlertSetting

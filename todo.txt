@@ -1,5 +1,4 @@
 
-* only one alarm at a time should have any audio 
 * sound for red alert
 * npm run format as a git commit hook?
 * see "Sparse Fieldsets" in mbta api doc?
