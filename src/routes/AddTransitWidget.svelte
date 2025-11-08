@@ -28,9 +28,28 @@
       redMinutes: 5,
       ignoreEarlyBusses: false,
       tooEarlyTime: "08:30",
-      beepRepeatInterval: 5,
-      minBeepTime: "07:00",
-      maxBeepTime: "10:00",
+      sound: {
+        minTime: "07:00",
+        maxTime: "10:00",
+        yellow: {
+          active: true,
+          beep: {
+            repeatInterval: 5,
+            volume: 100,
+            freq: 220,
+            duration: 300,
+          },
+        },
+        red: {
+          active: true,
+          beep: {
+            repeatInterval: 2,
+            volume: 110,
+            freq: 120,
+            duration: 300,
+          },
+        },
+      },
     };
     addTransit(transit);
   }

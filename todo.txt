@@ -1,4 +1,6 @@
 
+* setBeepInterval not called when we change the beeep repeat interval
+* make beep params configurable
 * sound for red alert
 * npm run format as a git commit hook?
 * see "Sparse Fieldsets" in mbta api doc?

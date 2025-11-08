@@ -10,7 +10,7 @@
   <span class="middle">
     {#if shouldDoBeep}
       every <input
-        bind:value={transit.beepRepeatInterval}
+        bind:value={transit.sound.yellow.beep.repeatInterval}
         on:input={handleInput}
         type="number"
         min="1"
@@ -21,13 +21,13 @@
         between
         <input
           type="time"
-          bind:value={transit.minBeepTime}
+          bind:value={transit.sound.minTime}
           on:input={handleInput}
         />
         and
         <input
           type="time"
-          bind:value={transit.maxBeepTime}
+          bind:value={transit.sound.maxTime}
           on:input={handleInput}
         />
       </span>

@@ -40,7 +40,6 @@
     setInterval(getPrediction, 9999);
     setInterval(getAlerts, 5 * 60 * 1000);
     setInterval(tickTime, 333);
-    setBeepInterval(transit.beepRepeatInterval);
   });
 
   function setBeepInterval(repeatInterval) {
@@ -52,10 +51,10 @@
     if (!(typeof interval == "number") || interval < 1) {
       interval = 1;
     }
+    maybeBeep();
     beepTimerID = setInterval(maybeBeep, interval * 1000);
   }
 
-  $: setBeepInterval(transit.beepRepeatInterval);
   $: if (shouldDoBeep && soundAllowed) makeAudioContext();
 
   function makeAudioContext() {
@@ -198,7 +197,7 @@
   }
 
   function updatePredictionDisplay(now, prediction, _) {
-    let shouldBeepNow = false;
+    let beepsOnNow = false;
     if (prediction) {
       let soonestArrivalTime = getSoonestValidArrival(prediction);
       if (soonestArrivalTime == null) {
@@ -215,10 +214,10 @@
           if (shouldDoBeep && soundAllowed) {
             let nowMinutes = now.getHours() * 60 + now.getMinutes();
             if (
-              nowMinutes >= timeStringToMinutes(transit.minBeepTime) &&
-              nowMinutes <= timeStringToMinutes(transit.maxBeepTime)
+              nowMinutes >= timeStringToMinutes(transit.sound.minTime) &&
+              nowMinutes <= timeStringToMinutes(transit.sound.maxTime)
             ) {
-              shouldBeepNow = true;
+              beepsOnNow = true;
             }
           }
         } else if (minutes < transit.greenMinutes) {
@@ -230,7 +229,14 @@
     } else {
       soonest = "";
     }
-    beepsOn = shouldBeepNow;
+    if (beepsOnNow) {
+      if (!beepsOn) {
+        beepsOn = true;
+        setBeepInterval(transit.sound.yellow.beep.repeatInterval);
+      }
+    } else {
+      beepsOn = false;
+    }
   }
 
   $: updatePredictionDisplay(now, prediction, errorText);
