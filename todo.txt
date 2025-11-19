@@ -1,4 +1,6 @@
 
+* consider using a reducer, see how to make one in Svelte here:
+   https://medium.com/geekculture/lets-talk-about-state-management-in-svelte-e4a59057b990
 * setBeepInterval not called when we change the beeep repeat interval
 * make beep params configurable
 * sound for red alert
